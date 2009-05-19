@@ -16,6 +16,9 @@ Translate the en.yml file into all supported languages and overwrite other yml f
 
 == INSTALL:
 
+ya2yaml is required to properly write utf8 yaml files.  Install it first.
+
+* sudo gem install ya2yaml  
 * sudo gem install babelphish
 
 == LICENSE:

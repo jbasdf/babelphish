@@ -13,9 +13,9 @@ $hoe = Hoe.new('babelphish', Babelphish::VERSION) do |p|
   p.summary              = "Translate with Google like a fule"
   p.description          = "Babelphish helps you make a quick translation of your application using Google Translate."
   
-  # p.extra_deps         = [
-  #   ['activesupport','>= 2.0.2'],
-  # ]
+  p.extra_deps         = [
+    ['ya2yaml','>= 0.26'],
+  ]
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]
   ]

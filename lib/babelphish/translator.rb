@@ -1,6 +1,8 @@
 require 'yaml'
-require 'fileutils'
+require 'ya2yaml'
 require 'babelphish/languages'
+require 'jcode'
+
 require 'ruby-debug'
 
 module Babelphish
@@ -8,6 +10,7 @@ module Babelphish
     class << self
       
       def translate_yaml(yml, overwrite = false)
+        $KCODE = 'UTF8'
         language = File.basename(yml, ".yml")
         if !Babelphish::GoogleTranslate::LANGUAGES.include?(language)
           STDERR.puts "#{language} is not one of the available languages.  Please choose a standard localized yml file.  i.e. en.yml."
@@ -23,11 +26,21 @@ module Babelphish
         return unless File.exist?(yml)
         translated_filename = File.join(File.dirname(yml), "#{to}.yml")
         return if File.exist?(translated_filename) && !overwrite
-        text = IO.read(yml)
-        translated_text = translate(text, to, from)
-        File.open(translated_filename, 'w') { |f| f.write(translated_text) }
+        translated_yml = YAML.load_file(yml)
+        translate_keys(translated_yml, to, from)
+        File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
       end
 
+      def translate_keys(translate_hash, to, from)
+        translate_hash.each_key do |key|
+          if translate_hash[key].is_a?(Hash)
+            translate_keys(translate_hash[key], to, from)
+          else
+            translate_hash[key] = translate(translate_hash[key], to, from)
+          end
+        end
+      end
+    
       # from: http://ruby.geraldbauer.ca/google-translation-api.html
       def translate(text, to, from = 'en')
 
