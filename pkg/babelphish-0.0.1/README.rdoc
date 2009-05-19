@@ -4,11 +4,15 @@
 
 == DESCRIPTION:
 
-babelphish makes it simple to translate a directory of files using Google Translate
+babelphish makes it simple to translate you yaml files into all the languages supported by Google Translate
 
-== SYNOPSIS:
+== USAGE:
 
-  babelphish -d ./my/locales
+Translate the en.yml file into all supported languages:
+  babelphish -y ./my/locales/en.yml
+  
+Translate the en.yml file into all supported languages and overwrite other yml files:
+  babelphish -y ./my/locales/en.yml -o
 
 == INSTALL:
 
