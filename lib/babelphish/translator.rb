@@ -36,7 +36,15 @@ module Babelphish
           if translate_hash[key].is_a?(Hash)
             translate_keys(translate_hash[key], to, from)
           else
+            # pull out all the string substitutions so that google doesn't translate those
+            pattern = /\{\{.+\}\}/
+            holder = '{{---}}'
+            replacements = translate_hash[key].scan(pattern)
+            translate_hash[key].gsub!(pattern, holder)
             translate_hash[key] = translate(translate_hash[key], to, from)
+            replacements.each do |r|
+              translate_hash[key].sub!(holder, r)
+            end
           end
         end
       end
