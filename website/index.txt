@@ -1,0 +1,40 @@
+h1. babelphish
+
+
+h2. The basics
+
+Babelphish will translate your application's yml file's using Google Translate.  Sure the translations might not be perfect, but in many cases they will be good enough until you can pay for professional translation work.
+
+
+h2. Installing
+
+Make sure you have ya2yaml installed:
+<pre syntax="ruby">sudo gem install ya2yaml</pre>
+
+Install babelphish
+<pre syntax="ruby">sudo gem install babelphish</pre>
+
+
+h2. Usage
+
+Translate the en.yml file into all supported languages:
+  babelphish -y ./my/locales/en.yml
+  
+Translate the en.yml file into all supported languages and overwrite other yml files:
+  babelphish -y ./my/locales/en.yml -o
+  
+
+h2. How to submit patches
+
+Fork the code on Github:
+<a href="http://github.com/jbasdf/babelphish/tree/master">http://github.com/jbasdf/babelphish/tree/master</a>
+
+
+h2. License
+
+This code is free to use under the terms of the MIT license. 
+
+h2. Contact
+
+Comments are welcome. Send an email to my account on github: <a href="http://github.com/jbasdf">http://github.com/jbasdf</a> or you can find me on the web: <a href="http://www.justinball.com">http://www.justinball.com</a>
+

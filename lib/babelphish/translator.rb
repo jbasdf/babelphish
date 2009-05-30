@@ -28,6 +28,9 @@ module Babelphish
         return if File.exist?(translated_filename) && !overwrite
         translated_yml = YAML.load_file(yml)
         translate_keys(translated_yml, to, from)
+        # change the top level key from the source language to the destination language
+        translated_yml[to] = translated_yml[from]
+        translated_yml.delete(from)
         File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
       end
 
