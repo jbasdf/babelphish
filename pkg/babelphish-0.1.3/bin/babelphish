@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'babelphish'
+
+task = :babelphish
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: babelphish [options]"
+  opts.on('-y', '--yaml yml', "Required.  Path to the yml file to be translated") {|yml| ENV['yml'] = yml }
+  opts.on('-o', '--overwrite', "Overwrite existing translations(default 'false')") { ENV['overwrite'] = 'yes' }
+end.parse!
+
+if Babelphish.load_tasks
+  Rake::Task[task].invoke
+else
+  STDERR.puts "Can't find Rakefile. Are we in a Rails folder?"
+end
