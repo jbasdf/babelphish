@@ -1,0 +1,16 @@
+LICENSE
+History.txt
+Manifest.txt
+PostInstall.txt
+README.rdoc
+Rakefile
+bin/babelphish
+lib/babelphish.rb
+lib/babelphish/languages.rb
+lib/babelphish/translator.rb
+lib/tasks/babelphish.rake
+script/console
+script/destroy
+script/generate
+test/test_babelphish.rb
+test/test_helper.rb
