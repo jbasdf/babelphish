@@ -7,15 +7,24 @@ module Babelphish
   module Translator
     class << self
       
-      def translate_yaml(yml, overwrite = false)
+      def translate_yaml(yml, overwrite = false, translate_to = nil)
+        @yml = yml
         $KCODE = 'UTF8'
         language = File.basename(yml, ".yml")
         if !Babelphish::GoogleTranslate::LANGUAGES.include?(language)
           STDERR.puts "#{language} is not one of the available languages.  Please choose a standard localized yml file.  i.e. en.yml."
           return
         end
-        Babelphish::GoogleTranslate::LANGUAGES.each do |to|
-          translate_and_write_yml(yml, to, language, overwrite)
+        if translate_to
+          puts "Translating #{language} to #{translate_to}"
+          translate_and_write_yml(yml, translate_to, language, overwrite)
+          puts "Finished translating #{language} to #{translate_to}"
+        else
+          Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+            puts "Translating #{language} to #{to}"
+            translate_and_write_yml(yml, to, language, overwrite)
+            puts "Finished translating #{language} to #{to}"
+          end
         end
       end
 
@@ -81,10 +90,7 @@ module Babelphish
         if json['responseStatus'] == 200
           json['responseData']['translatedText']
         else
-          puts response
-          puts to
-          puts from
-          raise StandardError, response['responseDetails']
+          puts "A problem occured while translating from #{from} to #{to}.  To retry only this translation try: babelphish -o -y #{@yml} -t #{to} to babelphish.  Response: #{response}"
         end
       end
 
