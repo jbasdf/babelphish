@@ -18,35 +18,50 @@ module Babelphish
           translate_and_write_yml(yml, translate_to, language, overwrite)
           puts "Finished translating #{language} to #{translate_to}"
         else
-          Babelphish::GoogleTranslate::LANGUAGES.each do |to|
-            puts "Translating #{language} to #{to}"
-            translate_and_write_yml(yml, to, language, overwrite)
-            puts "Finished translating #{language} to #{to}"
-          end
-          
-          # tos = Babelphish::GoogleTranslate::LANGUAGES
-          # translate_and_write_many_yml(yml, tos, language, overwrite)
+          # Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+          #   puts "Translating #{language} to #{to}"
+          #   translate_and_write_yml(yml, to, language, overwrite)
+          #   puts "Finished translating #{language} to #{to}"
+          # end
+          tos = Babelphish::GoogleTranslate::LANGUAGES
+          translate_and_write_many_yml(yml, tos, language, overwrite)
         end
       end
 
-      def translate_and_write_many_yml(yml, from, tos, overwrite)
+      def translate_and_write_many_yml(yml, tos, from, overwrite)
         return unless File.exist?(yml)
-        translated_yml = YAML.load_file(yml)
-        translate_many_keys(translated_yml, from, tos)
+        source = YAML.load_file(yml)
+        translated_source = YAML.load_file(yml)
+        translate_many_keys(translated_source, tos, from)
+        # At this point translated_source contains a translation for every language.  Cut it apart into individual hashes
         tos.each do |to|
+          next if to == from # don't want to overwrite the source file
+          extracted_translation = {}
+          extract_translation(source, translated_source, extracted_translation, to)
           # change the top level key from the source language to the destination language
           translated_filename = File.join(File.dirname(yml), "#{to}.yml")
           return if File.exist?(translated_filename) && !overwrite
-          translated_yml[to] = translated_yml[from]
-          translated_yml.delete(from)
-          File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
+          extracted_translation[to] = extracted_translation[from]
+          extracted_translation.delete(from)
+          File.open(translated_filename, 'w') { |f| f.write(extracted_translation.ya2yaml) }
         end
       end
-      
-      def translate_many_keys(translate_hash, from, tos)
+
+      def extract_translation(source, translated_source, extracted, language)
+        source.each_key do |key|
+          if source[key].is_a?(Hash)
+            extracted[key] = {}
+            extract_translation(source[key], translated_source[key], extracted[key], language)
+          else
+            extracted[key] = translated_source[key][language]
+          end
+        end
+      end
+          
+      def translate_many_keys(translate_hash, tos, from)
         translate_hash.each_key do |key|
           if translate_hash[key].is_a?(Hash)
-            translate_many_keys(translate_hash[key], from, tos)
+            translate_many_keys(translate_hash[key], tos, from)
           else
             if key == false
               puts "Key #{key} was evaluated as false.  Check your yml file and be sure it does not include values like no: No"
@@ -58,10 +73,10 @@ module Babelphish
               holder = '{{---}}'
               replacements = translate_hash[key].scan(pattern)
               translate_hash[key].gsub!(pattern, holder)
-              translations = multiple_translate(translate_hash[key], from, tos)
-              translations.each_key do |key|
+              translations = multiple_translate(translate_hash[key], tos, from)
+              translations.each_key do |locale|
                 replacements.each do |r|
-                  translations[key].sub!(holder, r)
+                  translations[locale].sub!(holder, r)
                 end
               end
               translate_hash[key] = translations
@@ -77,12 +92,12 @@ module Babelphish
         return unless File.exist?(yml)
         translated_filename = File.join(File.dirname(yml), "#{to}.yml")
         return if File.exist?(translated_filename) && !overwrite
-        translated_yml = YAML.load_file(yml)
-        translate_keys(translated_yml, to, from)
+        source = YAML.load_file(yml)
+        translate_keys(source, to, from)
         # change the top level key from the source language to the destination language
-        translated_yml[to] = translated_yml[from]
-        translated_yml.delete(from)
-        File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
+        source[to] = source[from]
+        source.delete(from)
+        File.open(translated_filename, 'w') { |f| f.write(source.ya2yaml) }
       end
 
       def translate_keys(translate_hash, to, from)
@@ -154,7 +169,7 @@ module Babelphish
       # results from google look like this:
       # {"responseData": [{"responseData":{"translatedText":"ciao mondo"},"responseDetails":null,"responseStatus":200},{"responseData":{"translatedText":"Bonjour le Monde"},"responseDetails":null,"responseStatus":200}], "responseDetails": null, "responseStatus": 200}
       #      
-      def multiple_translate(text, from = 'en', tos = Babelphish::GoogleTranslate::LANGUAGES, tries = 0)
+      def multiple_translate(text, tos, from = 'en', tries = 0)
         base = GOOGLE_AJAX_URL + 'translate'
         # assemble query params
         params = {
@@ -170,6 +185,7 @@ module Babelphish
         response = Net::HTTP.get_response( URI.parse( "#{base}?#{query}" ) )
         json = JSON.parse( response.body )
 
+        # responseStatus"=>206   "some responses contain errors"
         if json['responseStatus'] == 200
           results = {}
           json['responseData'].each_with_index do |data, index|
@@ -184,9 +200,9 @@ module Babelphish
         else
           if tries <= MAX_RETRIES
             # Try again a few more times
-            multiple_translate(text, to, from, tries+=1)
+            multiple_translate(text, tos, from, tries+=1)
           else
-            puts "A problem occured while translating from #{from} to #{to}.  To retry only this translation try: 'babelphish -o -y #{@yml} -t #{to}' to retry the translation.  Response: #{response}"
+            puts "A problem occured while translating. Response: #{response}"
           end
         end
       end
