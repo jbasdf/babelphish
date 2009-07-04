@@ -18,7 +18,7 @@ class TestBabelphish < Test::Unit::TestCase
   end
   
   def test_multiple_translate
-    translations = Babelphish::Translator.multiple_translate('hello', 'en')
+    translations = Babelphish::Translator.multiple_translate('hello', Babelphish::GoogleTranslate::LANGUAGES, 'en')
     assert_equal 'hola', translations[Babelphish::GoogleTranslate::SPANISH]
     assert_equal 'hallo', translations[Babelphish::GoogleTranslate::GERMAN]
     assert_equal 'ciao', translations[Babelphish::GoogleTranslate::ITALIAN]

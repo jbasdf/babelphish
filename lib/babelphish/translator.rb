@@ -3,9 +3,6 @@ module Babelphish
 
     class << self
       
-      GOOGLE_AJAX_URL = "http://ajax.googleapis.com/ajax/services/language/"
-      MAX_RETRIES = 3
-      
       def translate_yaml(yml, overwrite = false, translate_to = nil)
         @yml = yml
         language = File.basename(yml, ".yml")
@@ -130,7 +127,7 @@ module Babelphish
       def translate(text, to, from = 'en', tries = 0)
 
         return if to == from
-        base = GOOGLE_AJAX_URL + 'translate' 
+        base = Babelphish::GOOGLE_AJAX_URL + 'translate' 
         # assemble query params
         params = {
           :langpair => "#{from}|#{to}", 
@@ -144,7 +141,7 @@ module Babelphish
         if json['responseStatus'] == 200
           json['responseData']['translatedText']
         else
-          if tries <= MAX_RETRIES
+          if tries <= Babelphish::MAX_RETRIES
             # Try again a few more times
             translate(text, to, from, tries+=1)
           else
@@ -170,7 +167,7 @@ module Babelphish
       # {"responseData": [{"responseData":{"translatedText":"ciao mondo"},"responseDetails":null,"responseStatus":200},{"responseData":{"translatedText":"Bonjour le Monde"},"responseDetails":null,"responseStatus":200}], "responseDetails": null, "responseStatus": 200}
       #      
       def multiple_translate(text, tos, from = 'en', tries = 0)
-        base = GOOGLE_AJAX_URL + 'translate'
+        base = Babelphish::GOOGLE_AJAX_URL + 'translate'
         # assemble query params
         params = {
           :q => text,
@@ -185,7 +182,6 @@ module Babelphish
         response = Net::HTTP.get_response( URI.parse( "#{base}?#{query}" ) )
         json = JSON.parse( response.body )
 
-        # responseStatus"=>206   "some responses contain errors"
         if json['responseStatus'] == 200
           results = {}
           json['responseData'].each_with_index do |data, index|
@@ -198,7 +194,7 @@ module Babelphish
           end
           results
         else
-          if tries <= MAX_RETRIES
+          if tries <= Babelphish::MAX_RETRIES
             # Try again a few more times
             multiple_translate(text, tos, from, tries+=1)
           else
@@ -211,7 +207,7 @@ module Babelphish
       # Returns an array indicating success/fail and the resulting data from google in a hash:
       # {"language"=>"en", "confidence"=>0.08594032, "isReliable"=>false}
       def detect_language(text)
-        request = GOOGLE_AJAX_URL + "detect?v=1.0&q=" + CGI.escape(text) 
+        request = Babelphish::GOOGLE_AJAX_URL + "detect?v=1.0&q=" + CGI.escape(text) 
         # send get request
         response = Net::HTTP.get_response( URI.parse( request ) )
         json = JSON.parse( response.body )

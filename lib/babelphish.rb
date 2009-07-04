@@ -34,7 +34,9 @@ $KCODE = 'UTF8'
   
 module Babelphish
   VERSION = '0.1.6'
-
+  GOOGLE_AJAX_URL = "http://ajax.googleapis.com/ajax/services/language/"
+  MAX_RETRIES = 3
+  
   def self.load_tasks
     if File.exists?('Rakefile')
       load 'Rakefile'

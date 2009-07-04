@@ -8,6 +8,7 @@ bin/babelphish
 lib/babelphish.rb
 lib/babelphish/languages.rb
 lib/babelphish/translator.rb
+lib/babelphish/exceptions.rb
 lib/tasks/babelphish.rake
 script/console
 script/destroy

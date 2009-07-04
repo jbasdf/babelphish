@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["justinball@gmail.com"]
   s.executables = ["babelphish"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc"]
-  s.files = ["LICENSE", "History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "bin/babelphish", "lib/babelphish.rb", "lib/babelphish/languages.rb", "lib/babelphish/translator.rb", "lib/tasks/babelphish.rake", "script/console", "script/destroy", "script/generate", "test/test_babelphish.rb", "test/test_helper.rb"]
+  s.files = ["LICENSE", "History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "bin/babelphish", "lib/babelphish.rb", "lib/babelphish/languages.rb", "lib/babelphish/translator.rb", "lib/babelphish/exceptions.rb", "lib/tasks/babelphish.rake", "script/console", "script/destroy", "script/generate", "test/test_babelphish.rb", "test/test_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/jbasdf/babelphish}
   s.post_install_message = %q{PostInstall.txt}
