@@ -10,7 +10,7 @@ $hoe = Hoe.new('babelphish', Babelphish::VERSION) do |p|
   p.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
   p.rubyforge_name       = 'babelphish'
   p.url                  = "http://github.com/jbasdf/babelphish"
-  p.summary              = "Translate with Google like a fule"
+  p.summary              = "Translate with Google like a fule => 'fool'"
   p.description          = "Babelphish helps you make a quick translation of your application using Google Translate."
   
   p.extra_deps         = [
@@ -31,3 +31,19 @@ Dir['tasks/**/*.rake'].each { |t| load t }
 
 # TODO - want other tests/tasks run by default? Add them to the list
 # task :default => [:spec, :features]
+
+# TODO get rcov working
+begin
+  require 'rcov/rcovtask'
+  Rcov::RcovTask.new do |t|
+    t.libs << 'lib'
+    t.pattern = 'test/*_test.rb'
+    t.verbose = true
+#    t.output_dir = 'coverage'
+#    t.rcov_opts << '--exclude "gems/*"'
+  end
+rescue LoadError
+  task :rcov do
+    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+  end
+end
