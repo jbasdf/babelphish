@@ -18,45 +18,49 @@ module Babelphish
           translate_and_write_yml(yml, translate_to, language, overwrite)
           puts "Finished translating #{language} to #{translate_to}"
         else
-          Babelphish::GoogleTranslate::LANGUAGES.each do |to|
-            puts "Translating #{language} to #{to}"
-            translate_and_write_yml(yml, to, language, overwrite)
-            puts "Finished translating #{language} to #{to}"
+          translate_and_write_yml(yml, language, overwrite)
+        end
+      end
+
+      def translate_and_write_yml(yml, from, overwrite)
+        return unless File.exist?(yml)
+        source_yml = YAML.load_file(yml)
+        translated_hashes = {}
+        translate_keys(source_yml, translated_hashes, from)
+        translated_hashes.each_key do |key|
+          translated_hash = translated_hashes[key]
+          # change the top level key from the source language to the destination language
+          translated_hash[key] = translated_hash[from]
+          translated_hash.delete(from)
+          translated_filename = File.join(File.dirname(yml), "#{key}.yml")
+          if !File.exist?(translated_filename) || overwrite
+            File.open(translated_filename, 'w') { |f| f.write(translated_hash.ya2yaml) }
           end
         end
       end
 
-      def translate_and_write_yml(yml, to, from, overwrite)
-        return if to == from
-        return unless File.exist?(yml)
-        translated_filename = File.join(File.dirname(yml), "#{to}.yml")
-        return if File.exist?(translated_filename) && !overwrite
-        translated_yml = YAML.load_file(yml)
-        translate_keys(translated_yml, to, from)
-        # change the top level key from the source language to the destination language
-        translated_yml[to] = translated_yml[from]
-        translated_yml.delete(from)
-        File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
-      end
-
-      def translate_keys(translate_hash, to, from)
-        translate_hash.each_key do |key|
-          if translate_hash[key].is_a?(Hash)
-            translate_keys(translate_hash[key], to, from)
+      def translate_keys(source_hash, translated_hashes, from)
+        source_hash.each_key do |key|
+          if source_hash[key].is_a?(Hash)
+            translate_keys(source_hash[key], translated_hashes, from)
           else
             if key == false
-              puts "Key #{key} was evaluated as false.  Check your yml file and be sure to escape values like no with 'no'.  ie 'no': 'No'"
+              puts "Key #{key} was evaluated as false.  Check your yml file and be sure there are no values like no: No.  They will evaluate to false and produce a bad key."
             elsif key == true
-              puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
-            elsif !translate_hash[key].nil?
+              puts "Key #{key} was evaluated as true.  Check your yml file and be sure there are no values like yes: Yes.  They will evaluate to true and produce a bad key."
+            elsif !source_hash[key].nil?
               # pull out all the string substitutions so that google doesn't translate those
               pattern = /\{\{.+\}\}/
               holder = '{{---}}'
-              replacements = translate_hash[key].scan(pattern)
-              translate_hash[key].gsub!(pattern, holder)
-              translate_hash[key] = translate(translate_hash[key], to, from)
-              replacements.each do |r|
-                translate_hash[key].sub!(holder, r)
+              replacements = source_hash[key].scan(pattern)
+              source_hash[key].gsub!(pattern, holder)
+              translations = Babelphish::Translator.multiple_translate(source_hash[key], from)
+              translations.each_key do |key|
+                replacements.each do |r|
+                  translations[key].sub!(holder, r)
+                end
+                translated_hashes[key] ||= {}
+                # have to reconstruct the hash.
               end
             else
               puts "Key #{key} contains no data"
