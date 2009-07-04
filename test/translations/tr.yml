@@ -1,0 +1,7 @@
+--- 
+tr: 
+  babelphish: 
+    more: 
+      test_more: "Bu düşük bir seviyede"
+    test: "Bu bir test dizesidir"
+    test_embedded: "Bu {{insert}} katıştırma bir dizedir"

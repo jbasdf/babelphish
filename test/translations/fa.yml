@@ -1,0 +1,7 @@
+--- 
+fa: 
+  babelphish: 
+    more: 
+      test_more: "این یک سطح پایین تر است."
+    test: "این یک تست است که رشته"
+    test_embedded: "این یک رشته با embedding {{insert}}است."

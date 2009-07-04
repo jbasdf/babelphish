@@ -1,0 +1,7 @@
+--- 
+iw: 
+  babelphish: 
+    more: 
+      test_more: "זה לרמה נמוכה יותר"
+    test: "זוהי בדיקה מחרוזת"
+    test_embedded: "זה הוא מחרוזת עם Embedding {{insert}}"

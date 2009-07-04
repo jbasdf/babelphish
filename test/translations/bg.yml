@@ -1,0 +1,7 @@
+--- 
+bg: 
+  babelphish: 
+    more: 
+      test_more: "Това е по-ниско ниво"
+    test: "Това е тест стринг"
+    test_embedded: "Това е низ с внедрени {{insert}}"

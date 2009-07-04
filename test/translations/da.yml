@@ -1,0 +1,7 @@
+--- 
+da: 
+  babelphish: 
+    more: 
+      test_more: "Dette er et lavere niveau"
+    test: "Dette er en test string"
+    test_embedded: "Dette er en streng med indlejring {{insert}}"

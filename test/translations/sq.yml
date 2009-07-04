@@ -1,0 +1,7 @@
+--- 
+sq: 
+  babelphish: 
+    more: 
+      test_more: "Ky është një nivel më të ulët"
+    test: "Kjo varg është një provë"
+    test_embedded: "Ky është një varg me embedding {{insert}}"

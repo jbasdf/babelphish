@@ -23,9 +23,55 @@ module Babelphish
             translate_and_write_yml(yml, to, language, overwrite)
             puts "Finished translating #{language} to #{to}"
           end
+          
+          # tos = Babelphish::GoogleTranslate::LANGUAGES
+          # translate_and_write_many_yml(yml, tos, language, overwrite)
         end
       end
 
+      def translate_and_write_many_yml(yml, from, tos, overwrite)
+        return unless File.exist?(yml)
+        translated_yml = YAML.load_file(yml)
+        translate_many_keys(translated_yml, from, tos)
+        tos.each do |to|
+          # change the top level key from the source language to the destination language
+          translated_filename = File.join(File.dirname(yml), "#{to}.yml")
+          return if File.exist?(translated_filename) && !overwrite
+          translated_yml[to] = translated_yml[from]
+          translated_yml.delete(from)
+          File.open(translated_filename, 'w') { |f| f.write(translated_yml.ya2yaml) }
+        end
+      end
+      
+      def translate_many_keys(translate_hash, from, tos)
+        translate_hash.each_key do |key|
+          if translate_hash[key].is_a?(Hash)
+            translate_many_keys(translate_hash[key], from, tos)
+          else
+            if key == false
+              puts "Key #{key} was evaluated as false.  Check your yml file and be sure it does not include values like no: No"
+            elsif key == true
+              puts "Key #{key} was evaluated as true.  Check your yml file and be sure it does not include values like yes: Yes"
+            elsif !translate_hash[key].nil?
+              # pull out all the string substitutions so that google doesn't translate those
+              pattern = /\{\{.+\}\}/
+              holder = '{{---}}'
+              replacements = translate_hash[key].scan(pattern)
+              translate_hash[key].gsub!(pattern, holder)
+              translations = multiple_translate(translate_hash[key], from, tos)
+              translations.each_key do |key|
+                replacements.each do |r|
+                  translations[key].sub!(holder, r)
+                end
+              end
+              translate_hash[key] = translations
+            else
+              puts "Key #{key} contains no data"
+            end
+          end
+        end
+      end
+      
       def translate_and_write_yml(yml, to, from, overwrite)
         return if to == from
         return unless File.exist?(yml)

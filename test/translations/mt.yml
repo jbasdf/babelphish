@@ -1,0 +1,7 @@
+--- 
+mt: 
+  babelphish: 
+    more: 
+      test_more: "Dan huwa livell aktar baxx"
+    test: "Dan huwa test string"
+    test_embedded: "Din hija string mal pedamentazzjoni {{insert}}"

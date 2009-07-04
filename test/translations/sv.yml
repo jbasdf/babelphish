@@ -1,0 +1,7 @@
+--- 
+sv: 
+  babelphish: 
+    more: 
+      test_more: "Detta är en lägre nivå"
+    test: "Detta är ett test string"
+    test_embedded: "Detta är en sträng med inbakning {{insert}}"

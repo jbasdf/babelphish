@@ -1,0 +1,7 @@
+--- 
+th: 
+  babelphish: 
+    more: 
+      test_more: นี่คือระดับต่ำ
+    test: นี่คือการทดสอบสตริง
+    test_embedded: "นี่คือสตริงที่มีการฝัง {{insert}}"

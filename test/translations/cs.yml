@@ -1,0 +1,7 @@
+--- 
+cs: 
+  babelphish: 
+    more: 
+      test_more: "Jedná se o nižší úroveň"
+    test: "Jedná se o test"
+    test_embedded: "Toto je řetězec s vloženým {{insert}}"

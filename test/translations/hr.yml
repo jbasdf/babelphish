@@ -1,0 +1,7 @@
+--- 
+hr: 
+  babelphish: 
+    more: 
+      test_more: "To je niže razine"
+    test: "Ovo je test string"
+    test_embedded: "To je niz s ugrađivanje {{insert}}"

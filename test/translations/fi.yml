@@ -1,0 +1,7 @@
+--- 
+fi: 
+  babelphish: 
+    more: 
+      test_more: "Tämä on alhaisempi"
+    test: "Tämä on testi string"
+    test_embedded: "Tämä on merkkijono kanssa embedding {{insert}}"

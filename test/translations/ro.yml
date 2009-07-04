@@ -1,0 +1,7 @@
+--- 
+ro: 
+  babelphish: 
+    more: 
+      test_more: "Acesta este un nivel mai mic"
+    test: "Acesta este un test cu coarde"
+    test_embedded: "Acesta este un şir de caractere cu embedding {{insert}}"

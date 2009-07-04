@@ -1,0 +1,7 @@
+--- 
+zh-CN: 
+  babelphish: 
+    more: 
+      test_more: 这是一个较低的水平
+    test: 这是一个测试字符串
+    test_embedded: "这是一个字符串嵌入{{insert}}"
