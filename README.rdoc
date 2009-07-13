@@ -14,14 +14,42 @@ Translate the en.yml file into all supported languages:
 Translate the en.yml file into all supported languages and overwrite other yml files:
   babelphish -y ./my/locales/en.yml -o
 
+=== Using in your application
+Babelphish can be used to translate content programmatically within your application.  Use it thus:
+
+Translate content into a single language:
+  from = 'en'
+  to = 'es'
+  translation = Babelphish::Translator.translate('hello world', to, from)
+
+Translate content into all supported languages at once.  This will return a hash table with the locale as keys (ie 'en', 'es', etc).
+  translations = Babelphish::Translator.multiple_translate('hello world', Babelphish::GoogleTranslate::LANGUAGES, self.locale)
+  
+Here's a more extensive example
+  # Translate title and body using Google
+  def translate()
+    translate_from_locale = 'en'
+    title_translations = Babelphish::Translator.multiple_translate(self.title, Babelphish::GoogleTranslate::LANGUAGES, translate_from_locale)
+    body_translations = Babelphish::Translator.multiple_translate(self.body, Babelphish::GoogleTranslate::LANGUAGES, translate_from_locale)
+    
+    Babelphish::GoogleTranslate::LANGUAGES.each do |language|
+      self.content_translations.create!(:title => title_translations[language], 
+                                        :body => body_translations[language],
+                                        :locale => language)
+      end
+    end
+  end
+
 == INSTALL:
 
-ya2yaml should be automatically install, but in case they aren't:
-
-ya2yaml is required to properly write utf8 yaml files.  Install it first.
+ya2yaml should be automatically installed when you install babelphish, but is isn't:
 
 * sudo gem install ya2yaml  
 * sudo gem install babelphish
+
+== Related Blog Posts
+http://www.justinball.com/2009/05/19/babelphish-yml-translation-made-simple/comment-page-1/
+
 
 == LICENSE:
 

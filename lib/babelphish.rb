@@ -33,7 +33,7 @@ require File.dirname(__FILE__) + '/../lib/babelphish/exceptions'
 $KCODE = 'UTF8'
   
 module Babelphish
-  VERSION = '0.1.6'
+  VERSION = '0.1.7'
   GOOGLE_AJAX_URL = "http://ajax.googleapis.com/ajax/services/language/"
   MAX_RETRIES = 3
   
