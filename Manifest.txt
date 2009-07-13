@@ -9,6 +9,8 @@ lib/babelphish.rb
 lib/babelphish/languages.rb
 lib/babelphish/translator.rb
 lib/babelphish/exceptions.rb
+lib/babelphish/html_translator.rb
+lib/babelphish/yml_translator.rb
 lib/tasks/babelphish.rake
 script/console
 script/destroy

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{babelphish}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball"]
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["justinball@gmail.com"]
   s.executables = ["babelphish"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc"]
-  s.files = ["LICENSE", "History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "bin/babelphish", "lib/babelphish.rb", "lib/babelphish/languages.rb", "lib/babelphish/translator.rb", "lib/babelphish/exceptions.rb", "lib/tasks/babelphish.rake", "script/console", "script/destroy", "script/generate", "test/test_babelphish.rb", "test/test_helper.rb", "test/test_html_translator.rb", "test/test_yml_translator.rb"]
+  s.files = ["LICENSE", "History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "bin/babelphish", "lib/babelphish.rb", "lib/babelphish/languages.rb", "lib/babelphish/translator.rb", "lib/babelphish/exceptions.rb", "lib/babelphish/html_translator.rb", "lib/babelphish/yml_translator.rb", "lib/tasks/babelphish.rake", "script/console", "script/destroy", "script/generate", "test/test_babelphish.rb", "test/test_helper.rb", "test/test_html_translator.rb", "test/test_yml_translator.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/jbasdf/babelphish}
   s.post_install_message = %q{PostInstall.txt}
