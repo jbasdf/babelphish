@@ -6,14 +6,18 @@ require 'babelphish'
 task = :babelphish
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: babelphish [options]"
-  opts.on('-y', '--yaml yml', "Required.  Path to the yml file to be translated") { |yml| ENV['yml'] = yml }
+  opts.banner = "Usage: babelphish [options] "
+  opts.on('-y', '--yaml yml', "Path to the yml file to be translated") { |yml| ENV['yml'] = yml }
+  opts.on('-h', '--html html', "Path to the directory containing erb files to be translated") { |html| ENV['html'] = html }
+  opts.on('-l', '--language language', "Required if using 'html' option.  This specifies the source language for the html or erb files") { |language| ENV['language'] = language }
   opts.on('-o', '--overwrite', "Overwrite existing translations(default 'false')") { ENV['overwrite'] = 'yes' }
   opts.on('-t', '--translate_to to', "Only translate from the source file to a specific language (ie -t es will only translate to Spanish)") { |to| ENV['translate_to'] = to }
 end.parse!
 
-if Babelphish.load_tasks
-  Rake::Task[task].invoke
-else
-  STDERR.puts "Can't find Rakefile. Are we in a Rails folder?"
-end
+Babelphish.load_tasks
+
+# if Babelphish.load_tasks
+#   Rake::Task[task].invoke
+# else
+#   STDERR.puts "Can't find Rakefile. Are we in a Rails folder?"
+# end

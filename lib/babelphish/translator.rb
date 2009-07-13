@@ -2,128 +2,9 @@ module Babelphish
   module Translator
 
     class << self
-      
-      def translate_yaml(yml, overwrite = false, translate_to = nil)
-        @yml = yml
-        language = File.basename(yml, ".yml")
-        if !Babelphish::GoogleTranslate::LANGUAGES.include?(language)
-          STDERR.puts "#{language} is not one of the available languages.  Please choose a standard localized yml file.  i.e. en.yml."
-          return
-        end
-        if translate_to
-          puts "Translating #{language} to #{translate_to}"
-          translate_and_write_yml(yml, translate_to, language, overwrite)
-          puts "Finished translating #{language} to #{translate_to}"
-        else
-          # Babelphish::GoogleTranslate::LANGUAGES.each do |to|
-          #   puts "Translating #{language} to #{to}"
-          #   translate_and_write_yml(yml, to, language, overwrite)
-          #   puts "Finished translating #{language} to #{to}"
-          # end
-          tos = Babelphish::GoogleTranslate::LANGUAGES
-          translate_and_write_many_yml(yml, tos, language, overwrite)
-        end
-      end
-
-      def translate_and_write_many_yml(yml, tos, from, overwrite)
-        return unless File.exist?(yml)
-        source = YAML.load_file(yml)
-        translated_source = YAML.load_file(yml)
-        translate_many_keys(translated_source, tos, from)
-        # At this point translated_source contains a translation for every language.  Cut it apart into individual hashes
-        tos.each do |to|
-          next if to == from # don't want to overwrite the source file
-          extracted_translation = {}
-          extract_translation(source, translated_source, extracted_translation, to)
-          # change the top level key from the source language to the destination language
-          translated_filename = File.join(File.dirname(yml), "#{to}.yml")
-          return if File.exist?(translated_filename) && !overwrite
-          extracted_translation[to] = extracted_translation[from]
-          extracted_translation.delete(from)
-          File.open(translated_filename, 'w') { |f| f.write(extracted_translation.ya2yaml) }
-        end
-      end
-
-      def extract_translation(source, translated_source, extracted, language)
-        source.each_key do |key|
-          if source[key].is_a?(Hash)
-            extracted[key] = {}
-            extract_translation(source[key], translated_source[key], extracted[key], language)
-          else
-            extracted[key] = translated_source[key][language]
-          end
-        end
-      end
-          
-      def translate_many_keys(translate_hash, tos, from)
-        translate_hash.each_key do |key|
-          if translate_hash[key].is_a?(Hash)
-            translate_many_keys(translate_hash[key], tos, from)
-          else
-            if key == false
-              puts "Key #{key} was evaluated as false.  Check your yml file and be sure it does not include values like no: No"
-            elsif key == true
-              puts "Key #{key} was evaluated as true.  Check your yml file and be sure it does not include values like yes: Yes"
-            elsif !translate_hash[key].nil?
-              # pull out all the string substitutions so that google doesn't translate those
-              pattern = /\{\{.+\}\}/
-              holder = '{{---}}'
-              replacements = translate_hash[key].scan(pattern)
-              translate_hash[key].gsub!(pattern, holder)
-              translations = multiple_translate(translate_hash[key], tos, from)
-              translations.each_key do |locale|
-                replacements.each do |r|
-                  translations[locale].sub!(holder, r)
-                end
-              end
-              translate_hash[key] = translations
-            else
-              puts "Key #{key} contains no data"
-            end
-          end
-        end
-      end
-      
-      def translate_and_write_yml(yml, to, from, overwrite)
-        return if to == from
-        return unless File.exist?(yml)
-        translated_filename = File.join(File.dirname(yml), "#{to}.yml")
-        return if File.exist?(translated_filename) && !overwrite
-        source = YAML.load_file(yml)
-        translate_keys(source, to, from)
-        # change the top level key from the source language to the destination language
-        source[to] = source[from]
-        source.delete(from)
-        File.open(translated_filename, 'w') { |f| f.write(source.ya2yaml) }
-      end
-
-      def translate_keys(translate_hash, to, from)
-        translate_hash.each_key do |key|
-          if translate_hash[key].is_a?(Hash)
-            translate_keys(translate_hash[key], to, from)
-          else
-            if key == false
-              puts "Key #{key} was evaluated as false.  Check your yml file and be sure to escape values like no with 'no'.  ie 'no': 'No'"
-            elsif key == true
-              puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
-            elsif !translate_hash[key].nil?
-              # pull out all the string substitutions so that google doesn't translate those
-              pattern = /\{\{.+\}\}/
-              holder = '{{---}}'
-              replacements = translate_hash[key].scan(pattern)
-              translate_hash[key].gsub!(pattern, holder)
-              translate_hash[key] = translate(translate_hash[key], to, from)
-              replacements.each do |r|
-                translate_hash[key].sub!(holder, r)
-              end
-            else
-              puts "Key #{key} contains no data"
-            end
-          end
-        end
-      end
 
       # from: http://ruby.geraldbauer.ca/google-translation-api.html
+      # translate text from 'from' to 'to'
       def translate(text, to, from = 'en', tries = 0)
 
         return if to == from
@@ -145,16 +26,12 @@ module Babelphish
             # Try again a few more times
             translate(text, to, from, tries+=1)
           else
-            puts "A problem occured while translating from #{from} to #{to}. "
-            puts "#{json['responseDetails']} "
-            puts "To retry only this translation try: 'babelphish -o -y #{@yml} -t #{to}' to retry the translation.  Response: #{response}" if defined?(@yml)
-            raise Exceptions::GoogleResponseError, "#{json['responseDetails']}"
+            raise Exceptions::GoogleResponseError, "A problem occured while translating from #{from} to #{to}.  #{json['responseDetails']}"
           end
         end
       end
 
       # translate from the 'from' language into all available languages
-
       # multiple strings and multiple languages
       #
       # http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=hello%20world&langpair=en|it&q=goodbye&langpair=en|fr
@@ -198,7 +75,7 @@ module Babelphish
             # Try again a few more times
             multiple_translate(text, tos, from, tries+=1)
           else
-            puts "A problem occured while translating. Response: #{response}"
+            raise Exceptions::GoogleResponseError, "A problem occured while translating.  #{response}"
           end
         end
       end

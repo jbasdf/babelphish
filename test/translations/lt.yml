@@ -2,6 +2,6 @@
 lt: 
   babelphish: 
     more: 
-      test_more: "Tai yra žemesnio lygio"
+      test_more: "Tai žemesnio lygio"
     test: "Šis bandymo seka"
     test_embedded: "Tai seka su nusėdimo {{insert}}"
