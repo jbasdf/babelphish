@@ -14,10 +14,8 @@ OptionParser.new do |opts|
   opts.on('-t', '--translate_to to', "Only translate from the source file to a specific language (ie -t es will only translate to Spanish)") { |to| ENV['translate_to'] = to }
 end.parse!
 
-Babelphish.load_tasks
-
-# if Babelphish.load_tasks
-#   Rake::Task[task].invoke
-# else
-#   STDERR.puts "Can't find Rakefile. Are we in a Rails folder?"
-# end
+if Babelphish.load_tasks
+  Rake::Task[task].invoke
+else
+  STDERR.puts "Can't find Rakefile. Are we in a Rails folder?"
+end

@@ -32,8 +32,18 @@ module Babelphish
       # Translate a single page from the language specified in 'from'
       # into the languages specified by 'tos'
       def translate_and_write_page(source_page, tos, from, overwrite)
-        return unless File.exist?(source_page)
-        return unless translate_file?(source_page)
+        if File.exist?(source_page)
+          STDERR.puts "Translating: #{source_page}"
+        else
+          STDERR.puts "Could not find file: #{source_page}"
+          return
+        end
+        
+        if !translate_file?(source_page)
+          STDERR.puts "Not translating file: #{source_page}"
+          return
+        end
+        
         text = IO.read(source_page)
         
         # Pull out all the code blocks to Google doesn't mess with those
@@ -62,12 +72,28 @@ module Babelphish
 
       end
 
+      # Generate a file name for the newly translated content
       def get_translated_file(page, to)
-        page.gsub('.html', ".#{to}.html")
+        new_page = page.gsub('.html', ".#{to}.html")
+        new_page.gsub!('text.html', "text.#{to}.html")
+        new_page.gsub!('text.plain', "text.#{to}.plain")
+        new_page
       end
       
+      # This is a hack but all the translated files live in the same directory
+      # as the original file so we have to have some way of not translating the 
+      # translated files.
+      # this should return true for 
+      # test.html.erb, test.text.html.erb and test.text.plain.erb
+      # and false for
+      # test.es.html.erb, test.text.es.html.erb and test.text.es.plain.erb
       def translate_file?(page)
-        page.split('.').length == 3
+        test = page
+        test = test.gsub('./', '') if page[0..1] == './'
+        test = test.gsub('.text.html.erb', '')
+        test = test.gsub('.text.plain.erb', '')
+        test = test.gsub('.html.erb', '')
+        test.split('.').length == 1
       end
       
     end
