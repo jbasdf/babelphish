@@ -46,11 +46,17 @@ module Babelphish
         
         text = IO.read(source_page)
         
-        # Pull out all the code blocks to Google doesn't mess with those
+        # Pull out all the code blocks so Google doesn't mess with those
         pattern = /\<\%.+\%\>/
         holder = '{{---}}'
         replacements = text.scan(pattern)
         text.gsub!(pattern, holder)
+        
+        # Pull out all the new lines so Google doesn't mess with those
+        pattern = /\n/
+        newline_holder = '<brr />'
+        newline_replacements = text.scan(pattern)
+        text.gsub!(pattern, newline_holder)
         
         # Send to Google for translations
         translations = Babelphish::Translator.multiple_translate(text, tos, from)
@@ -62,6 +68,13 @@ module Babelphish
           end
         end
 
+        # Put the newlines back in
+        translations.each_key do |locale|
+          newline_replacements.each do |r|
+            translations[locale].sub!(newline_holder, r)
+          end
+        end
+        
         # Write the new file
         translations.each_key do |locale|
           translated_filename = get_translated_file(source_page, locale)
