@@ -46,6 +46,8 @@ module Babelphish
         
         text = IO.read(source_page)
         
+        begins_with_html = text['<html>']
+        
         # Pull out all the code blocks so Google doesn't mess with those
         pattern = /\<\%.+\%\>/
         holder = '{{---}}'
@@ -72,6 +74,10 @@ module Babelphish
         translations.each_key do |locale|
           newline_replacements.each do |r|
             translations[locale].sub!(newline_holder, r)
+            if translations[locale]['<html>']
+              # Google translate can insert '<html>' at the beginning of the result.  Remove it.
+              translations[locale]['<html>']= '' unless begins_with_html
+            end
           end
         end
         
