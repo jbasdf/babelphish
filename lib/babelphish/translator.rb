@@ -44,11 +44,12 @@ module Babelphish
       # {"responseData": [{"responseData":{"translatedText":"ciao mondo"},"responseDetails":null,"responseStatus":200},{"responseData":{"translatedText":"Bonjour le Monde"},"responseDetails":null,"responseStatus":200}], "responseDetails": null, "responseStatus": 200}
       #      
       def multiple_translate(text, tos, from = 'en', tries = 0)
+        return {} if text.strip.empty? # Google doesn't like it when you send them an empty string
         base = Babelphish::GOOGLE_AJAX_URL + 'translate'
         # assemble query params
         params = {
           :q => text,
-          :v => 1.0  
+          :v => 1.0
         }
         query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
         
@@ -75,7 +76,7 @@ module Babelphish
             # Try again a few more times
             multiple_translate(text, tos, from, tries+=1)
           else
-            raise Exceptions::GoogleResponseError, "A problem occured while translating.  #{response}"
+            raise Exceptions::GoogleResponseError, "A problem occured while translating.  #{response} -- #{response.body} -- From: #{from} -- Text: #{text}"
           end
         end
       end
