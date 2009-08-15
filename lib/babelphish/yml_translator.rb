@@ -1,6 +1,8 @@
 module Babelphish
   module YmlTranslator
 
+    SUBSTITUTION_PLACE_HOLDER = '{{---}}'
+    
     class << self
       
       # Translates the given yml file into the specified languages.  Will attempt to auto detect the from langauge
@@ -23,7 +25,6 @@ module Babelphish
           translate_and_write_yml(yml, translate_to, language, overwrite)
           puts "Finished translating #{language} to #{translate_to}"
         else
-          tos ||= Babelphish::GoogleTranslate::LANGUAGES
           translate_and_write_many_yml(yml, tos, language, overwrite)
         end
       end
@@ -51,14 +52,10 @@ module Babelphish
             elsif key == true
               puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
             elsif !translate_hash[key].nil?
-              # pull out all the string substitutions so that google doesn't translate those
-              pattern = /\{\{.+\}\}/
-              holder = '{{---}}'
-              replacements = translate_hash[key].scan(pattern)
-              translate_hash[key].gsub!(pattern, holder)
+              replacements = parse_substitutions(translate_hash[key])
               translate_hash[key] = Babelphish::Translator.translate(translate_hash[key], to, from)
               replacements.each do |r|
-                translate_hash[key].sub!(holder, r)
+                translate_hash[key].sub!(SUBSTITUTION_PLACE_HOLDER, r)
               end
             else
               puts "Key #{key} contains no data"
@@ -107,15 +104,11 @@ module Babelphish
             elsif key == true
               puts "Key #{key} was evaluated as true.  Check your yml file and be sure it does not include values like yes: Yes"
             elsif !translate_hash[key].nil?
-              # pull out all the string substitutions so that google doesn't translate those
-              pattern = /\{\{.+\}\}/
-              holder = '{{---}}'
-              replacements = translate_hash[key].scan(pattern)
-              translate_hash[key].gsub!(pattern, holder)
+              replacements = parse_substitutions(translate_hash[key])
               translations = Babelphish::Translator.multiple_translate(translate_hash[key], tos, from)
               translations.each_key do |locale|
                 replacements.each do |r|
-                  translations[locale].sub!(holder, r)
+                  translations[locale].sub!(SUBSTITUTION_PLACE_HOLDER, r)
                 end
               end
               translate_hash[key] = translations
@@ -124,6 +117,14 @@ module Babelphish
             end
           end
         end
+      end
+      
+      def parse_substitutions(translate_text)
+        # pull out all the string substitutions so that google doesn't translate those
+        pattern = /\{\{.+\}\}/
+        replacements = translate_text.scan(pattern)
+        translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER)
+        replacements
       end
       
     end

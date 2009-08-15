@@ -54,6 +54,9 @@ module Babelphish
         query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
         
         tos.each do |to|
+          if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
+            raise Exceptions::GoogleResponseError, "#{to} is not a valid Google Translate code.  Please be sure language codes are one of: #{Babelphish::GoogleTranslate::LANGUAGES.join(',')}"
+          end
           query <<  "&langpair=" + CGI.escape("#{from}|#{to}")
         end
 
@@ -64,10 +67,10 @@ module Babelphish
           results = {}
           json['responseData'].each_with_index do |data, index|
             if data['responseStatus'] == 200
-              results[Babelphish::GoogleTranslate::LANGUAGES[index]] = data['responseData']['translatedText']
+              results[tos[index]] = data['responseData']['translatedText']
             else
               # retry the single translation
-              translate(text, Babelphish::GoogleTranslate::LANGUAGES[index], from)
+              translate(text, tos[index], from)
             end
           end
           results

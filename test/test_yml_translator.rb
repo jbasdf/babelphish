@@ -19,8 +19,9 @@ class TestYmlTranslator < Test::Unit::TestCase
   def test_multiple_yml_translation
     overwrite = true
     yml = File.join(File.dirname(__FILE__), 'translations', 'en.yml')
-    Babelphish::YmlTranslator.translate(yml, overwrite)
-    Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+    tos = Babelphish::GoogleTranslate::LANGUAGES
+    Babelphish::YmlTranslator.translate(yml, overwrite, nil, tos)
+    tos.each do |to|
       translated_yml = File.join(File.dirname(__FILE__), 'translations', "#{to}.yml")
       translation = YAML.load_file(translated_yml)
       assert translation[to]
