@@ -121,7 +121,7 @@ module Babelphish
       
       def parse_substitutions(translate_text)
         # pull out all the string substitutions so that google doesn't translate those
-        pattern = /\{\{.+\}\}/
+        pattern = /\{\{.+?\}\}/ # non greedy pattern match so that we properly match strings like: "{{name}} on {{application_name}}"
         replacements = translate_text.scan(pattern)
         translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER)
         replacements

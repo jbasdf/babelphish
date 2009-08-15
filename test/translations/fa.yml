@@ -4,4 +4,4 @@ fa:
     more: 
       test_more: "این یک سطح پایین تر است."
     test: "این یک تست است که رشته"
-    test_embedded: "این embedding با یک رشته {{insert}}است."
+    test_embedded: "این یک رشته با embedding {{insert}}است."
