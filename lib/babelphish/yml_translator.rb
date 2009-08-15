@@ -3,7 +3,15 @@ module Babelphish
 
     class << self
       
-      def translate(yml, overwrite = false, translate_to = nil)
+      # Translates the given yml file into the specified languages.  Will attempt to auto detect the from langauge
+      # using the name of the yml file.
+      # yml           - Path to the yml file to be translated
+      # overwrite     - Boolean indicating whether or not existing translations should be overwritten.
+      # translate_to  - A single language to translate the file into.  (Valid values are specified in languages.rb)
+      #                 When this value is nil tos or Babelphish::GoogleTranslate::LANGUAGES is used to determine the languages
+      # tos           - An array containing the languages to translate the yml file into.  If nil or not specified then
+      #                 Babelphish::GoogleTranslate::LANGUAGES is used.
+      def translate(yml, overwrite = false, translate_to = nil, tos = nil)
         @yml = yml
         language = File.basename(yml, ".yml")
         if !Babelphish::GoogleTranslate::LANGUAGES.include?(language)
@@ -15,7 +23,7 @@ module Babelphish
           translate_and_write_yml(yml, translate_to, language, overwrite)
           puts "Finished translating #{language} to #{translate_to}"
         else
-          tos = Babelphish::GoogleTranslate::LANGUAGES
+          tos ||= Babelphish::GoogleTranslate::LANGUAGES
           translate_and_write_many_yml(yml, tos, language, overwrite)
         end
       end

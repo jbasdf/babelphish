@@ -3,5 +3,5 @@ vi:
   babelphish: 
     more: 
       test_more: "Đây là một cấp độ thấp hơn"
-    test: "Đây là một bài kiểm tra chuỗi"
+    test: "Đây là một chuỗi thử nghiệm"
     test_embedded: "Đây là một chuỗi ký tự với embedding {{insert}}"
