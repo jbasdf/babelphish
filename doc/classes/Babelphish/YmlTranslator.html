@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Babelphish::YmlTranslator</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Babelphish::YmlTranslator</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/lib/babelphish/yml_translator_rb.html">
+                lib/babelphish/yml_translator.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000015">extract_yml_translation</a>&nbsp;&nbsp;
+      <a href="#M000017">parse_substitutions</a>&nbsp;&nbsp;
+      <a href="#M000011">translate</a>&nbsp;&nbsp;
+      <a href="#M000014">translate_and_write_many_yml</a>&nbsp;&nbsp;
+      <a href="#M000012">translate_and_write_yml</a>&nbsp;&nbsp;
+      <a href="#M000013">translate_keys</a>&nbsp;&nbsp;
+      <a href="#M000016">translate_many_yml_keys</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SUBSTITUTION_PLACE_HOLDER</td>
+          <td>=</td>
+          <td class="context-item-value">'{{---}}'</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000015" class="method-detail">
+        <a name="M000015"></a>
+
+        <div class="method-heading">
+          <a href="#M000015" class="method-signature">
+          <span class="method-name">extract_yml_translation</span><span class="method-args">(source, translated_source, extracted, language)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000015-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000015-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 86</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">extract_yml_translation</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">translated_source</span>, <span class="ruby-identifier">extracted</span>, <span class="ruby-identifier">language</span>)
+        <span class="ruby-identifier">source</span>.<span class="ruby-identifier">each_key</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">source</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+            <span class="ruby-identifier">extracted</span>[<span class="ruby-identifier">key</span>] = {}
+            <span class="ruby-identifier">extract_yml_translation</span>(<span class="ruby-identifier">source</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">translated_source</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">extracted</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">language</span>)
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">extracted</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">translated_source</span>[<span class="ruby-identifier">key</span>][<span class="ruby-identifier">language</span>]
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="#M000017" class="method-signature">
+          <span class="method-name">parse_substitutions</span><span class="method-args">(translate_text)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000017-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 122</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_substitutions</span>(<span class="ruby-identifier">translate_text</span>)
+        <span class="ruby-comment cmt"># pull out all the string substitutions so that google doesn't translate those</span>
+        <span class="ruby-identifier">pattern</span> = <span class="ruby-regexp re">/\{\{.+?\}\}/</span> <span class="ruby-comment cmt"># non greedy pattern match so that we properly match strings like: &quot;{{name}} on {{application_name}}&quot;</span>
+        <span class="ruby-identifier">replacements</span> = <span class="ruby-identifier">translate_text</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)
+        <span class="ruby-identifier">translate_text</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-identifier">pattern</span>, <span class="ruby-constant">SUBSTITUTION_PLACE_HOLDER</span>)
+        <span class="ruby-identifier">replacements</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="#M000011" class="method-signature">
+          <span class="method-name">translate</span><span class="method-args">(yml, overwrite = false, translate_to = nil, tos = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Translates the given yml file into the specified languages. Will attempt to
+auto detect the from langauge using the name of the yml file. yml - Path to
+the yml file to be translated overwrite - Boolean indicating whether or not
+existing translations should be overwritten. translate_to - A single
+language to <a href="YmlTranslator.html#M000011">translate</a> the file
+into. (Valid values are specified in languages.rb)
+</p>
+<pre>
+                When this value is nil tos or Babelphish::GoogleTranslate::LANGUAGES is used to determine the languages
+</pre>
+<p>
+tos - An array containing the languages to <a
+href="YmlTranslator.html#M000011">translate</a> the yml file into. If nil
+or not specified then
+</p>
+<pre>
+                Babelphish::GoogleTranslate::LANGUAGES is used.
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 16</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">translate</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-identifier">overwrite</span> = <span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">translate_to</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">tos</span> = <span class="ruby-keyword kw">nil</span>)
+        <span class="ruby-ivar">@yml</span> = <span class="ruby-identifier">yml</span>
+        <span class="ruby-identifier">language</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-value str">&quot;.yml&quot;</span>)
+        <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">Babelphish</span><span class="ruby-operator">::</span><span class="ruby-constant">GoogleTranslate</span><span class="ruby-operator">::</span><span class="ruby-constant">LANGUAGES</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">language</span>)
+          <span class="ruby-constant">STDERR</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{language} is not one of the available languages.  Please choose a standard localized yml file.  i.e. en.yml.&quot;</span>
+          <span class="ruby-keyword kw">return</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">translate_to</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Translating #{language} to #{translate_to}&quot;</span>
+          <span class="ruby-identifier">translate_and_write_yml</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-identifier">translate_to</span>, <span class="ruby-identifier">language</span>, <span class="ruby-identifier">overwrite</span>)
+          <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Finished translating #{language} to #{translate_to}&quot;</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">translate_and_write_many_yml</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">language</span>, <span class="ruby-identifier">overwrite</span>)
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000014" class="method-detail">
+        <a name="M000014"></a>
+
+        <div class="method-heading">
+          <a href="#M000014" class="method-signature">
+          <span class="method-name">translate_and_write_many_yml</span><span class="method-args">(yml, tos, from, overwrite)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000014-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000014-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 67</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">translate_and_write_many_yml</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">overwrite</span>)
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">yml</span>)
+        <span class="ruby-identifier">source</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">yml</span>)
+        <span class="ruby-identifier">translated_source</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">yml</span>)
+        <span class="ruby-identifier">translate_many_yml_keys</span>(<span class="ruby-identifier">translated_source</span>, <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">from</span>)
+        <span class="ruby-comment cmt"># At this point translated_source contains a translation for every language.  Cut it apart into individual hashes</span>
+        <span class="ruby-identifier">tos</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">to</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">to</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">from</span> <span class="ruby-comment cmt"># don't want to overwrite the source file</span>
+          <span class="ruby-identifier">extracted_translation</span> = {}
+          <span class="ruby-identifier">extract_yml_translation</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">translated_source</span>, <span class="ruby-identifier">extracted_translation</span>, <span class="ruby-identifier">to</span>)
+          <span class="ruby-comment cmt"># change the top level key from the source language to the destination language</span>
+          <span class="ruby-identifier">translated_filename</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">yml</span>), <span class="ruby-node">&quot;#{to}.yml&quot;</span>)
+          <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">translated_filename</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">overwrite</span>
+          <span class="ruby-identifier">extracted_translation</span>[<span class="ruby-identifier">to</span>] = <span class="ruby-identifier">extracted_translation</span>[<span class="ruby-identifier">from</span>]
+          <span class="ruby-identifier">extracted_translation</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">from</span>)
+          <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">translated_filename</span>, <span class="ruby-value str">'w'</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">extracted_translation</span>.<span class="ruby-identifier">ya2yaml</span>) }
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">translate_and_write_yml</span><span class="method-args">(yml, to, from, overwrite)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 32</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">translate_and_write_yml</span>(<span class="ruby-identifier">yml</span>, <span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">overwrite</span>)
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">to</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">from</span>
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">yml</span>)
+        <span class="ruby-identifier">translated_filename</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">yml</span>), <span class="ruby-node">&quot;#{to}.yml&quot;</span>)
+        <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">translated_filename</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">overwrite</span>
+        <span class="ruby-identifier">source</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">yml</span>)
+        <span class="ruby-identifier">translate_keys</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span>)
+        <span class="ruby-comment cmt"># change the top level key from the source language to the destination language</span>
+        <span class="ruby-identifier">source</span>[<span class="ruby-identifier">to</span>] = <span class="ruby-identifier">source</span>[<span class="ruby-identifier">from</span>]
+        <span class="ruby-identifier">source</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">from</span>)
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">translated_filename</span>, <span class="ruby-value str">'w'</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">source</span>.<span class="ruby-identifier">ya2yaml</span>) }
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000013" class="method-detail">
+        <a name="M000013"></a>
+
+        <div class="method-heading">
+          <a href="#M000013" class="method-signature">
+          <span class="method-name">translate_keys</span><span class="method-args">(translate_hash, to, from)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000013-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000013-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 45</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">translate_keys</span>(<span class="ruby-identifier">translate_hash</span>, <span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span>)
+        <span class="ruby-identifier">translate_hash</span>.<span class="ruby-identifier">each_key</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+            <span class="ruby-identifier">translate_keys</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span>)
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} was evaluated as false.  Check your yml file and be sure to escape values like no with 'no'.  ie 'no': 'No'&quot;</span>
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'&quot;</span>
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+              <span class="ruby-identifier">replacements</span> = <span class="ruby-identifier">parse_substitutions</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>])
+              <span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-constant">Babelphish</span><span class="ruby-operator">::</span><span class="ruby-constant">Translator</span>.<span class="ruby-identifier">translate</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">to</span>, <span class="ruby-identifier">from</span>)
+              <span class="ruby-identifier">replacements</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">sub!</span>(<span class="ruby-constant">SUBSTITUTION_PLACE_HOLDER</span>, <span class="ruby-identifier">r</span>)
+              <span class="ruby-keyword kw">end</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} contains no data&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000016" class="method-detail">
+        <a name="M000016"></a>
+
+        <div class="method-heading">
+          <a href="#M000016" class="method-signature">
+          <span class="method-name">translate_many_yml_keys</span><span class="method-args">(translate_hash, tos, from)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000016-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000016-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/babelphish/yml_translator.rb, line 97</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">translate_many_yml_keys</span>(<span class="ruby-identifier">translate_hash</span>, <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">from</span>)
+        <span class="ruby-identifier">translate_hash</span>.<span class="ruby-identifier">each_key</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+            <span class="ruby-identifier">translate_many_yml_keys</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">from</span>)
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} was evaluated as false.  Check your yml file and be sure it does not include values like no: No&quot;</span>
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} was evaluated as true.  Check your yml file and be sure it does not include values like yes: Yes&quot;</span>
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+              <span class="ruby-identifier">replacements</span> = <span class="ruby-identifier">parse_substitutions</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>])
+              <span class="ruby-identifier">translations</span> = <span class="ruby-constant">Babelphish</span><span class="ruby-operator">::</span><span class="ruby-constant">Translator</span>.<span class="ruby-identifier">multiple_translate</span>(<span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">tos</span>, <span class="ruby-identifier">from</span>)
+              <span class="ruby-identifier">translations</span>.<span class="ruby-identifier">each_key</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">locale</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">replacements</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+                  <span class="ruby-identifier">translations</span>[<span class="ruby-identifier">locale</span>].<span class="ruby-identifier">sub!</span>(<span class="ruby-constant">SUBSTITUTION_PLACE_HOLDER</span>, <span class="ruby-identifier">r</span>)
+                <span class="ruby-keyword kw">end</span>
+              <span class="ruby-keyword kw">end</span>
+              <span class="ruby-identifier">translate_hash</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">translations</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Key #{key} contains no data&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

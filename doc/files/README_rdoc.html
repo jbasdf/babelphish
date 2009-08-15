@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README.rdoc</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>README.rdoc</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>README.rdoc
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Sat Aug 15 10:43:17 -0600 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>babelphish</h1>
+<ul>
+<li><a
+href="http://github.com/jbasdf/babelphish">github.com/jbasdf/babelphish</a>
+
+</li>
+</ul>
+<h2>DESCRIPTION:</h2>
+<p>
+babelphish makes it simple to translate you yaml files into all the
+languages supported by Google Translate
+</p>
+<h2>USAGE:</h2>
+<p>
+Translate the en.yml file into all supported languages:
+</p>
+<pre>
+  babelphish -y ./my/locales/en.yml
+</pre>
+<p>
+Translate the en.yml file into all supported languages and overwrite other
+yml files:
+</p>
+<pre>
+  babelphish -y ./my/locales/en.yml -o
+</pre>
+<h3>Using in your application</h3>
+<p>
+<a href="../classes/Babelphish.html">Babelphish</a> can be used to
+translate content programmatically within your application. Use it thus:
+</p>
+<p>
+Translate content into a single language:
+</p>
+<pre>
+  from = 'en'
+  to = 'es'
+  translation = Babelphish::Translator.translate('hello world', to, from)
+</pre>
+<p>
+Translate content into all supported languages at once. This will return a
+hash table with the locale as keys (ie &#8216;en&#8217;, &#8216;es&#8217;,
+etc).
+</p>
+<pre>
+  translations = Babelphish::Translator.multiple_translate('hello world', Babelphish::GoogleTranslate::LANGUAGES, self.locale)
+</pre>
+<p>
+Here&#8216;s a more extensive example
+</p>
+<pre>
+  # Translate title and body using Google
+  def translate()
+    translate_from_locale = 'en'
+    title_translations = Babelphish::Translator.multiple_translate(self.title, Babelphish::GoogleTranslate::LANGUAGES, translate_from_locale)
+    body_translations = Babelphish::Translator.multiple_translate(self.body, Babelphish::GoogleTranslate::LANGUAGES, translate_from_locale)
+
+    Babelphish::GoogleTranslate::LANGUAGES.each do |language|
+      self.content_translations.create!(:title =&gt; title_translations[language],
+                                        :body =&gt; body_translations[language],
+                                        :locale =&gt; language)
+      end
+    end
+  end
+</pre>
+<h2>INSTALL:</h2>
+<p>
+ya2yaml should be automatically installed when you install babelphish, but
+is isn&#8216;t:
+</p>
+<ul>
+<li>sudo gem install ya2yaml
+
+</li>
+<li>sudo gem install babelphish
+
+</li>
+</ul>
+<h2>Related Blog Posts</h2>
+<p>
+<a
+href="http://www.justinball.com/2009/05/19/babelphish-yml-translation-made-simple">www.justinball.com/2009/05/19/babelphish-yml-translation-made-simple</a>/
+</p>
+<h2>Language Codes:</h2>
+<p>
+AFRIKAANS = &#8216;af&#8217; ALBANIAN = &#8216;sq&#8217; AMHARIC =
+&#8216;am&#8217; ARABIC = &#8216;ar&#8217; ARMENIAN = &#8216;hy&#8217;
+AZERBAIJANI = &#8216;az&#8217; BASQUE = &#8216;eu&#8217; BELARUSIAN =
+&#8216;be&#8217; BENGALI = &#8216;bn&#8217; BIHARI = &#8216;bh&#8217;
+BULGARIAN = &#8216;bg&#8217; BURMESE = &#8216;my&#8217; CATALAN =
+&#8216;ca&#8217; CHEROKEE = &#8216;chr&#8217; CHINESE = &#8216;zh&#8217;
+CHINESE_SIMPLIFIED = &#8216;zh-CN&#8217; CHINESE_TRADITIONAL =
+&#8216;zh-TW&#8217; CROATIAN = &#8216;hr&#8217; CZECH = &#8216;cs&#8217;
+DANISH = &#8216;da&#8217; DHIVEHI = &#8216;dv&#8217; DUTCH =
+&#8216;nl&#8217; ENGLISH = &#8216;en&#8217; ESPERANTO = &#8216;eo&#8217;
+ESTONIAN = &#8216;et&#8217; FILIPINO = &#8216;tl&#8217; FINNISH =
+&#8216;fi&#8217; FRENCH = &#8216;fr&#8217; GALICIAN = &#8216;gl&#8217;
+GEORGIAN = &#8216;ka&#8217; GERMAN = &#8216;de&#8217; GREEK =
+&#8216;el&#8217; GUARANI = &#8216;gn&#8217; GUJARATI = &#8216;gu&#8217;
+HEBREW = &#8216;iw&#8217; HINDI = &#8216;hi&#8217; HUNGARIAN =
+&#8216;hu&#8217; ICELANDIC = &#8216;is&#8217; INDONESIAN = &#8216;id&#8217;
+INUKTITUT = &#8216;iu&#8217; ITALIAN = &#8216;it&#8217; JAPANESE =
+&#8216;ja&#8217; KANNADA = &#8216;kn&#8217; KAZAKH = &#8216;kk&#8217; KHMER
+= &#8216;km&#8217; KOREAN = &#8216;ko&#8217; KURDISH = &#8216;ku&#8217;
+KYRGYZ = &#8216;ky&#8217; LAOTHIAN = &#8216;lo&#8217; LATVIAN =
+&#8216;lv&#8217; LITHUANIAN = &#8216;lt&#8217; MACEDONIAN =
+&#8216;mk&#8217; MALAY = &#8216;ms&#8217; MALAYALAM = &#8216;ml&#8217;
+MALTESE = &#8216;mt&#8217; MARATHI = &#8216;mr&#8217; MONGOLIAN =
+&#8216;mn&#8217; NEPALI = &#8216;ne&#8217; NORWEGIAN = &#8216;no&#8217;
+ORIYA = &#8216;or&#8217; PASHTO = &#8216;ps&#8217; PERSIAN =
+&#8216;fa&#8217; POLISH = &#8216;pl&#8217; PORTUGUESE = &#8216;pt-PT&#8217;
+PUNJABI = &#8216;pa&#8217; ROMANIAN = &#8216;ro&#8217; RUSSIAN =
+&#8216;ru&#8217; SANSKRIT = &#8216;sa&#8217; SERBIAN = &#8216;sr&#8217;
+SINDHI = &#8216;sd&#8217; SINHALESE = &#8216;si&#8217; SLOVAK =
+&#8216;sk&#8217; SLOVENIAN = &#8216;sl&#8217; SPANISH = &#8216;es&#8217;
+SWAHILI = &#8216;sw&#8217; SWEDISH = &#8216;sv&#8217; TAJIK =
+&#8216;tg&#8217; TAMIL = &#8216;ta&#8217; TAGALOG = &#8216;tl&#8217; TELUGU
+= &#8216;te&#8217; THAI = &#8216;th&#8217; TIBETAN = &#8216;bo&#8217;
+TURKISH = &#8216;tr&#8217; UKRAINIAN = &#8216;uk&#8217; URDU =
+&#8216;ur&#8217; UZBEK = &#8216;uz&#8217; UIGHUR = &#8216;ug&#8217;
+VIETNAMESE = &#8216;vi&#8216;
+</p>
+<h2>LICENSE:</h2>
+<p>
+(The MIT License)
+</p>
+<p>
+Copyright (c) 2009 Justin Ball
+</p>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+&#8216;Software&#8217;), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p>
+<p>
+THE SOFTWARE IS PROVIDED &#8216;AS IS&#8217;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
