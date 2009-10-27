@@ -1,2 +1,0 @@
-For more information on babelphish, see http://babelphish.rubyforge.org
-
