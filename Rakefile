@@ -8,6 +8,7 @@ begin
     gem.description = "Babelphish helps you make a quick translation of your application using Google Translate."
     gem.authors = ["Justin Ball"]
     gem.rubyforge_project = "babelphish"
+    gem.add_dependency "ya2yaml"
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|
