@@ -1,7 +1,0 @@
---- 
-sr: 
-  babelphish: 
-    more: 
-      test_more: "То је ниже нивое"
-    test: "Ово је тест стринг"
-    test_embedded: "То је низ са уграђивање {{insert}}"

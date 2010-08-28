@@ -1,7 +1,0 @@
---- 
-it: 
-  babelphish: 
-    more: 
-      test_more: "Si tratta di un livello inferiore"
-    test: "Questa è una stringa di prova"
-    test_embedded: "Questa è una stringa con l&#39;incorporamento {{insert}}"

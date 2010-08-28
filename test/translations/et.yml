@@ -1,7 +1,0 @@
---- 
-et: 
-  babelphish: 
-    more: 
-      test_more: "See on madalam tase"
-    test: "See on katse string"
-    test_embedded: "See on stringi koos kinnistades {{insert}}"

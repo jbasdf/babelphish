@@ -1,7 +1,0 @@
---- 
-ca: 
-  babelphish: 
-    more: 
-      test_more: "Aquest és un nivell més baix"
-    test: "Això és una prova de cadenes"
-    test_embedded: "Aquesta és una cadena amb la incorporació {{insert}}"

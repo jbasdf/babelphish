@@ -1,7 +1,0 @@
---- 
-ko: 
-  babelphish: 
-    more: 
-      test_more: "이것은 낮은 수준이다"
-    test: "This is a test를 문자열입니다"
-    test_embedded: "이것은 내장과 {{insert}} 문자열입니다"

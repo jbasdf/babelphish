@@ -1,7 +1,0 @@
---- 
-fr: 
-  babelphish: 
-    more: 
-      test_more: "Il s&#39;agit d&#39;un niveau inférieur"
-    test: "Il s&#39;agit d&#39;une chaîne de test"
-    test_embedded: "Il s&#39;agit d&#39;une chaîne avec un enrobage {{insert}}"

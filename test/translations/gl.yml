@@ -1,7 +1,0 @@
---- 
-gl: 
-  babelphish: 
-    more: 
-      test_more: "Este é un nivel inferior"
-    test: "Este é un exame cadea"
-    test_embedded: "Esta é unha cadea coa incorporación {{insert}}"

@@ -1,7 +1,0 @@
---- 
-nl: 
-  babelphish: 
-    more: 
-      test_more: "Dit is een lager niveau"
-    test: "Dit is een test string"
-    test_embedded: "Dit is een string met inbedding {{insert}}"

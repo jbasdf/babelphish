@@ -1,7 +1,0 @@
---- 
-ar: 
-  babelphish: 
-    more: 
-      test_more: "وهذا هو أدنى مستوى"
-    test: "هذا اختبار من سلسلة"
-    test_embedded: "هذا هو دمج مع سلسلة {{insert}}"

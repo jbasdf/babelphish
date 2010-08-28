@@ -1,7 +1,0 @@
---- 
-sk: 
-  babelphish: 
-    more: 
-      test_more: "Jedná sa o nižšiu úroveň"
-    test: "Jedná sa o test"
-    test_embedded: "Toto je reťazec s vloženým {{insert}}"

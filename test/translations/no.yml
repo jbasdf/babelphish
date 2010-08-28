@@ -1,8 +1,0 @@
---- 
-? "no"
-: 
-  babelphish: 
-    more: 
-      test_more: "Dette er et lavere nivå"
-    test: "Dette er en test string"
-    test_embedded: "Dette er en streng med embedding {{insert}}"

@@ -1,7 +1,0 @@
---- 
-ru: 
-  babelphish: 
-    more: 
-      test_more: "Это более низкий уровень"
-    test: "Это тест строкой"
-    test_embedded: "Это строки с вложением {{insert}}"

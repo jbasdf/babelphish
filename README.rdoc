@@ -145,7 +145,7 @@ VIETNAMESE = 'vi'
 
 (The MIT License)
 
-Copyright (c) 2009 Justin Ball
+Copyright (c) 2009-2010 Justin Ball
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

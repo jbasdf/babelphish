@@ -1,7 +1,0 @@
---- 
-tl: 
-  babelphish: 
-    more: 
-      test_more: "Ito ay isang mas mababang antas ng"
-    test: "Ito ay isang pagsubok string"
-    test_embedded: "Ito ay isang string na may-embed {{insert}}"

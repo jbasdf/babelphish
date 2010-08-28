@@ -1,7 +1,0 @@
---- 
-hi: 
-  babelphish: 
-    more: 
-      test_more: "यह एक निचला स्तर है"
-    test: "यह एक परीक्षण स्ट्रिंग है"
-    test_embedded: "यह {{insert}} embedding के साथ एक स्ट्रिंग है"

@@ -1,7 +1,0 @@
---- 
-id: 
-  babelphish: 
-    more: 
-      test_more: "Ini adalah tingkat yang lebih rendah"
-    test: "Ini merupakan ujian string"
-    test_embedded: "Ini adalah sebuah string dengan embedding {{insert}}"

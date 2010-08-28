@@ -1,7 +1,0 @@
---- 
-pl: 
-  babelphish: 
-    more: 
-      test_more: "Jest to niższy poziom"
-    test: "To jest test string"
-    test_embedded: "Jest to ciąg z wbudowanym {{insert}}"

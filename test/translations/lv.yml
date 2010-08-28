@@ -1,7 +1,0 @@
---- 
-lv: 
-  babelphish: 
-    more: 
-      test_more: "Šī ir zemāka līmeņa"
-    test: "Šis ir tests string"
-    test_embedded: "Šī ir string ar Iekļaujot {{insert}}"

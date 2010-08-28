@@ -1,7 +1,0 @@
---- 
-ja: 
-  babelphish: 
-    more: 
-      test_more: これは、下のレベルです
-    test: これはテスト文字列です
-    test_embedded: "この{{insert}}組み込みの文字列です"

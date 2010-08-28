@@ -1,7 +1,0 @@
---- 
-sl: 
-  babelphish: 
-    more: 
-      test_more: "To je nižji stopnji"
-    test: "To je test string"
-    test_embedded: "To je niz s Embedding {{insert}}"

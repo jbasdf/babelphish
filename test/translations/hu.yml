@@ -1,7 +1,0 @@
---- 
-hu: 
-  babelphish: 
-    more: 
-      test_more: "Ez egy olyan alacsonyabb szintű"
-    test: "Ez egy próba szöveg"
-    test_embedded: "Ez egy olyan karakterlánc beágyazása {{insert}}"
