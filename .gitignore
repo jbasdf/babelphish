@@ -4,3 +4,6 @@ coverage
 rdoc
 pkg
 pkg/*
+test/html_translations/test.*.html.erb
+test/html_translations/test.text.*.html.erb
+test/translations/*.yml
