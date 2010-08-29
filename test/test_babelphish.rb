@@ -4,7 +4,7 @@ class TestBabelphish < Test::Unit::TestCase
 
   def test_translate
     translation = Babelphish::Translator.translate('hello', 'es', 'en')
-    assert_equal 'hola', translation
+    assert_equal '¡Hola', translation
   end
   
   def test_run_each_language
@@ -19,10 +19,10 @@ class TestBabelphish < Test::Unit::TestCase
   
   def test_multiple_translate
     translations = Babelphish::Translator.multiple_translate('hello', Babelphish::GoogleTranslate::LANGUAGES, 'en')
-    assert_equal 'hola', translations[Babelphish::GoogleTranslate::SPANISH]
+    assert_equal '¡Hola', translations[Babelphish::GoogleTranslate::SPANISH]
     assert_equal 'hallo', translations[Babelphish::GoogleTranslate::GERMAN]
     assert_equal 'ciao', translations[Babelphish::GoogleTranslate::ITALIAN]
-    assert_equal 'salut', translations[Babelphish::GoogleTranslate::ROMANIAN]
+    assert_equal 'alo', translations[Babelphish::GoogleTranslate::ROMANIAN]
     assert_equal 'こんにちは', translations[Babelphish::GoogleTranslate::JAPANESE]
   end
   

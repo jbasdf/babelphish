@@ -54,12 +54,6 @@ module Babelphish
         replacements = text.scan(pattern)
         text.gsub!(pattern, holder)
         
-        # Pull out all the translation blocks so Google doesn't mess with those
-        pattern = /\%\{.+\}/
-        holder = '-.-.-'
-        replacements = text.scan(pattern)
-        text.gsub!(pattern, holder)
-        
         # Pull out all the new lines so Google doesn't mess with those
         pattern = /\n/
         newline_holder = '<brr />'
@@ -75,7 +69,7 @@ module Babelphish
             translations[locale].sub!(holder, r)
           end
         end
-
+        
         # Put the newlines back in
         translations.each_key do |locale|
           newline_replacements.each do |r|

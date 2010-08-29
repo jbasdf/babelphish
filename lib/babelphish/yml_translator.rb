@@ -2,6 +2,7 @@ module Babelphish
   module YmlTranslator
 
     SUBSTITUTION_PLACE_HOLDER = '{{---}}'
+    SUBSTITUTION_PLACE_HOLDER_2 = '-.-.-'
     
     class << self
       
@@ -52,11 +53,9 @@ module Babelphish
             elsif key == true
               puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
             elsif !translate_hash[key].nil?
-              replacements = parse_substitutions(translate_hash[key])
+              add_substitutions(translate_hash[key])
               translate_hash[key] = Babelphish::Translator.translate(translate_hash[key], to, from)
-              replacements.each do |r|
-                translate_hash[key].sub!(SUBSTITUTION_PLACE_HOLDER, r)
-              end
+              remove_substitutions(translate_hash[key])              
             else
               puts "Key #{key} contains no data"
             end
@@ -104,12 +103,10 @@ module Babelphish
             elsif key == true
               puts "Key #{key} was evaluated as true.  Check your yml file and be sure it does not include values like yes: Yes"
             elsif !translate_hash[key].nil?
-              replacements = parse_substitutions(translate_hash[key])
+              add_substitutions(translate_hash[key])
               translations = Babelphish::Translator.multiple_translate(translate_hash[key], tos, from)
               translations.each_key do |locale|
-                replacements.each do |r|
-                  translations[locale].sub!(SUBSTITUTION_PLACE_HOLDER, r)
-                end
+                remove_substitutions(translations[locale])
               end
               translate_hash[key] = translations
             else
@@ -119,13 +116,26 @@ module Babelphish
         end
       end
       
-      def parse_substitutions(translate_text)
+      def add_substitutions(translate_text)
         # pull out all the string substitutions so that google doesn't translate those
         pattern = /\{\{.+?\}\}/ # non greedy pattern match so that we properly match strings like: "{{name}} on {{application_name}}"
-        replacements = translate_text.scan(pattern)
+        @replacements = translate_text.scan(pattern)
         translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER)
-        replacements
+
+        # Pull out all the translation blocks so Google doesn't mess with those
+        pattern = /%\{.+?\}/
+        @replacements2 = translate_text.scan(pattern)
+        translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER_2)
       end
+      
+      def remove_substitutions(translate_text)
+        @replacements.each do |r|
+          translate_text.sub!(SUBSTITUTION_PLACE_HOLDER, r)
+        end
+        @replacements2.each do |r|
+          translate_text.sub!(SUBSTITUTION_PLACE_HOLDER_2, r)
+        end
+      end  
       
     end
   end

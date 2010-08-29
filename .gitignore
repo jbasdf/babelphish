@@ -6,4 +6,5 @@ pkg
 pkg/*
 test/html_translations/test.*.html.erb
 test/html_translations/test.text.*.html.erb
+test/html_translations/test.text.*.plain.erb
 test/translations/*.yml

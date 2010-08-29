@@ -11,9 +11,9 @@ class TestYmlTranslator < Test::Unit::TestCase
     translation = YAML.load_file(translated_yml)
     assert translation['es']
     assert translation['es']['babelphish']
-    assert_equal "Este es un nivel más bajo", translation['es']['babelphish']['more']['test_more']
-    assert_equal "Esto es una prueba de cadenas", translation['es']['babelphish']['test']
-    assert_equal "Esta es una cadena con la incorporación {{insert}}", translation['es']['babelphish']['test_embedded']
+    assert_equal "Se trata de un nivel inferior", translation['es']['babelphish']['more']['test_more']
+    assert_equal "Esto es una cadena de prueba", translation['es']['babelphish']['test']
+    assert_equal "Esta es una cadena con incrustación {{insert}}", translation['es']['babelphish']['test_embedded']
   end
   
   def test_multiple_yml_translation
