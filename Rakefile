@@ -31,6 +31,7 @@ begin
     gem.authors = ["Justin Ball"]
     gem.rubyforge_project = "babelphish"
     gem.add_dependency "ya2yaml"
+    gem.add_dependency "json"
   end
   Jeweler::GemcutterTasks.new
   Jeweler::RubyforgeTasks.new do |rubyforge|
