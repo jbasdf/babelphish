@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{babelphish}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball", "Michael Jenik"]
@@ -72,7 +72,6 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/jbasdf/babelphish}
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{babelphish}
   s.rubygems_version = %q{1.6.0}
   s.summary = %q{Translate with Google like a fule => 'fool'}
   s.test_files = [
