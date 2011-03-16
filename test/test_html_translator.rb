@@ -6,8 +6,8 @@ class TestHtmlTranslator < Test::Unit::TestCase
     overwrite = true
     translate_from = 'en'
     directory = File.join(File.dirname(__FILE__), 'html_translations')
-    Babelphish::HtmlTranslator.translate(directory, Babelphish::GoogleTranslate::LANGUAGES, translate_from, overwrite)
-    Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+    Babelphish::HtmlTranslator.translate(directory, ['es'], translate_from, overwrite)
+    ['es'].each do |to|
       if to != translate_from
         # This will make sure the file was created
         translated_html = File.join(File.dirname(__FILE__), 'html_translations', "test.#{to}.html.erb")
@@ -23,8 +23,8 @@ class TestHtmlTranslator < Test::Unit::TestCase
     overwrite = true
     translate_from = 'en'
     directory = File.join(File.dirname(__FILE__), 'html_translations')
-    Babelphish::HtmlTranslator.translate(directory, Babelphish::GoogleTranslate::LANGUAGES, translate_from, overwrite)
-    Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+    Babelphish::HtmlTranslator.translate(directory, ['es'], translate_from, overwrite)
+    ['es'].each do |to|
       if to != translate_from
         # This will make sure the file was created
         translated_html = File.join(File.dirname(__FILE__), 'html_translations', "test.text.#{to}.html.erb")
@@ -40,8 +40,8 @@ class TestHtmlTranslator < Test::Unit::TestCase
     overwrite = true
     translate_from = 'en'
     directory = File.join(File.dirname(__FILE__), 'html_translations')
-    Babelphish::HtmlTranslator.translate(directory, Babelphish::GoogleTranslate::LANGUAGES, translate_from, overwrite)
-    Babelphish::GoogleTranslate::LANGUAGES.each do |to|
+    Babelphish::HtmlTranslator.translate(directory, ['es'], translate_from, overwrite)
+    ['es'].each do |to|
       if to != translate_from
         # This will make sure the file was created
         translated_html = File.join(File.dirname(__FILE__), 'html_translations', "test.text.#{to}.plain.erb")

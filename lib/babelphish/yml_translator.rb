@@ -44,20 +44,29 @@ module Babelphish
       end
       
       def translate_keys(translate_hash, to, from)
-        translate_hash.each_key do |key|
-          if translate_hash[key].is_a?(Hash)
-            translate_keys(translate_hash[key], to, from)
-          else
-            if key == false
-              puts "Key #{key} was evaluated as false.  Check your yml file and be sure to escape values like no with 'no'.  ie 'no': 'No'"
-            elsif key == true
-              puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
-            elsif !translate_hash[key].nil?
-              add_substitutions(translate_hash[key])
-              translate_hash[key] = Babelphish::Translator.translate(translate_hash[key], to, from)
-              remove_substitutions(translate_hash[key])              
+        if translate_hash.is_a?(String)
+          add_substitutions(translate_hash)
+          translate_hash = Babelphish::Translator.translate(translate_hash, to, from)
+          remove_substitutions(translate_hash)              
+        elsif translate_hash.is_a?(Array)
+          translate_hash.map!{ |x| if !x.nil? then Babelphish::Translator.translate(x, to, from) else "" end }
+        elsif translate_hash.is_a?(Hash)
+          translate_hash.each_key do |key|
+            next if translate_hash[key].is_a?(Fixnum)
+            if translate_hash[key].is_a?(Hash) || translate_hash[key].is_a?(Array)
+              translate_keys(translate_hash[key], to, from)
             else
-              puts "Key #{key} contains no data"
+              if key == false
+                puts "Key #{key} was evaluated as false.  Check your yml file and be sure to escape values like no with 'no'.  ie 'no': 'No'"
+              elsif key == true
+                puts "Key #{key} was evaluated as true.  Check your yml file and be sure to escape values like yes with 'yes'. ie 'yes': 'Yes'"
+              elsif !translate_hash[key].nil?
+                add_substitutions(translate_hash[key])
+                translate_hash[key] = Babelphish::Translator.translate(translate_hash[key], to, from)
+                remove_substitutions(translate_hash[key])              
+              else
+                puts "Key #{key} contains no data"
+              end
             end
           end
         end

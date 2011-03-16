@@ -3,12 +3,15 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 class TestBabelphish < Test::Unit::TestCase
 
   def test_translate
+    Babelphish.set_settings(nil)
     translation = Babelphish::Translator.translate('hello', 'es', 'en')
-    assert_equal '¡Hola', translation
+    assert_equal 'hola', translation
   end
   
   def test_run_each_language
-    Babelphish::GoogleTranslate::LANGUAGES.each do |language|
+    Babelphish.set_settings(nil)
+    #Babelphish::GoogleTranslate::LANGUAGES.each do |language|  # Running all languages is time consuming and probably pisses off google
+    ['es', 'fr'].each do |language|
       begin
         translation = Babelphish::Translator.translate('hello', language)
       rescue => ex
@@ -18,21 +21,65 @@ class TestBabelphish < Test::Unit::TestCase
   end
   
   def test_multiple_translate
-    translations = Babelphish::Translator.multiple_translate('hello', Babelphish::GoogleTranslate::LANGUAGES, 'en')
-    assert_equal '¡Hola', translations[Babelphish::GoogleTranslate::SPANISH]
+    Babelphish.set_settings(nil)
+    translations = Babelphish::Translator.multiple_translate('hello', [Babelphish::GoogleTranslate::SPANISH, 
+                                                                       Babelphish::GoogleTranslate::GERMAN,
+                                                                       Babelphish::GoogleTranslate::ITALIAN,
+                                                                       Babelphish::GoogleTranslate::ROMANIAN,
+                                                                       Babelphish::GoogleTranslate::JAPANESE], 'en')
+    assert_equal 'hola', translations[Babelphish::GoogleTranslate::SPANISH]
     assert_equal 'hallo', translations[Babelphish::GoogleTranslate::GERMAN]
     assert_equal 'ciao', translations[Babelphish::GoogleTranslate::ITALIAN]
     assert_equal 'alo', translations[Babelphish::GoogleTranslate::ROMANIAN]
     assert_equal 'こんにちは', translations[Babelphish::GoogleTranslate::JAPANESE]
   end
   
-  def test_detect_language    
+  def test_supported_languages
+    Babelphish.set_settings(nil)
+    assert_equal Babelphish::Translator.supported_languages, Babelphish::GoogleTranslate::LANGUAGES
+  end
+  
+  # run same tests with v1 of the api
+  def test_translate_v1
+    Babelphish.set_settings({"api_key"=>"", "version"=>"v1"})
+    translation = Babelphish::Translator.translate('hello', 'es', 'en')
+    assert_equal 'hola', translation
+  end
+  
+  def test_run_each_language_v1
+    Babelphish.set_settings({"api_key"=>"", "version"=>"v1"})
+    ['es'].each do |language|
+      begin
+        translation = Babelphish::Translator.translate('hello', language)
+      rescue => ex
+        puts "There was a problem translating to #{language}:  #{ex}"
+      end
+    end
+  end
+  
+  def test_multiple_translate_v1
+    Babelphish.set_settings({"api_key"=>"", "version"=>"v1"})
+    translations = Babelphish::Translator.multiple_translate('hello', [Babelphish::GoogleTranslate::SPANISH, 
+                                                                       Babelphish::GoogleTranslate::GERMAN,
+                                                                       Babelphish::GoogleTranslate::ITALIAN,
+                                                                       Babelphish::GoogleTranslate::ROMANIAN,
+                                                                       Babelphish::GoogleTranslate::JAPANESE], 'en')
+    assert_equal 'hola', translations[Babelphish::GoogleTranslate::SPANISH]
+    assert_equal 'hallo', translations[Babelphish::GoogleTranslate::GERMAN]
+    assert_equal 'ciao', translations[Babelphish::GoogleTranslate::ITALIAN]
+    assert_equal 'alo', translations[Babelphish::GoogleTranslate::ROMANIAN]
+    assert_equal 'こんにちは', translations[Babelphish::GoogleTranslate::JAPANESE]
+  end
+  
+  def test_detect_language_v1
+    Babelphish.set_settings({"api_key"=>"", "version"=>"v1"})
     success, result = Babelphish::Translator.detect_language('hello world')
     assert success, "Failed to detect language"
     assert_equal Babelphish::GoogleTranslate::ENGLISH, result['language']
   end
   
-  def test_supported_languages
+  def test_supported_languages_v1
+    Babelphish.set_settings({"api_key"=>"", "version"=>"v1"})
     assert_equal Babelphish::Translator.supported_languages, Babelphish::GoogleTranslate::LANGUAGES
   end
   

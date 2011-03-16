@@ -6,6 +6,28 @@
 
 babelphish makes it simple to translate you yaml files into all the languages supported by Google Translate
 
+== NOTE:
+
+detect_language does not currently supported v2 of the Google API - Google doesn't provide the functionality. But you can easily switch between
+API version by calling Babelphish.set_settings({"api_key"=>"PUT YOUR KEY HERE", "version"=>"v2"}) or Babelphish.set_settings({"api_key"=>"", "version"=>"v1"}).
+
+== CONFIG:
+
+babelphish now supports version 2 of the Google API. To enable the new version you will need to get an API key from Google:
+https://code.google.com/apis/console/?pli=1#welcome
+
+Once you have the key create a file in your home directory called .babelphish.yml
+The contents should look like this:
+
+  api_key: THE KEY YOU GET FROM GOOGLE GOES HERE
+  version: v2
+
+You can also set the values programmatically:
+
+  Babelphish.set_settings({"api_key"=>"", "version"=>"v2"})
+
+Google places a 100,000 character limit per day on each API key. Once you hit the limit Google will begin returning 403 errors.
+
 == USAGE:
 
 Translate the en.yml file into all supported languages:
@@ -146,7 +168,7 @@ VIETNAMESE = 'vi'
 
 (The MIT License)
 
-Copyright (c) 2009-2010 Justin Ball
+Copyright (c) 2009-2011 Justin Ball
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -6,27 +6,67 @@ module Babelphish
       # from: http://ruby.geraldbauer.ca/google-translation-api.html
       # translate text from 'from' to 'to'
       def translate(text, to, from = 'en', tries = 0)
-
         return if to == from
-        base = Babelphish::GOOGLE_AJAX_URL + 'translate' 
-        # assemble query params
-        params = {
-          :langpair => "#{from}|#{to}", 
-          :q => text,
-          :v => 1.0  
-        }
-        query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
+        if text.is_a? Symbol 
+           return text
+        end
+        
+        if text.length > 1000  #actually the USI length limit is 2000
+           text_now = ""
+           text_rem = ""
+           text.split(".") do |text_chunk|
+              if text_now.length < 1000
+                 text_now += (text_now.length == 0 ? "" : ".") + text_chunk
+              else
+                 text_rem += (text_now.length == 0 ? "" : ".") + text_chunk
+              end 
+           end
+           return translate(text_now, to, from) + "." + translate(text_rem, to, from)
+        end
+        
+        base = Babelphish.google_ajax_url 
+        if Babelphish.api_version == 'v2'
+          # assemble query params
+          params = {
+            :source => "#{from}", 
+            :target => "#{to}", 
+            :q => text,
+            :key => Babelphish.settings['api_key']
+          }
+        else
+          base << 'translate' 
+          # assemble query params
+          params = {
+            :langpair => "#{from}|#{to}", 
+            :source => "#{from}", 
+            :target => "#{to}", 
+            :q => text,
+            :v => 1.0  
+          }
+        end
+        
         # send get request
-        response = Net::HTTP.get_response( URI.parse( "#{base}?#{query}" ) )
-        json = JSON.parse( response.body )
-        if json['responseStatus'] == 200
-          json['responseData']['translatedText']
+        uri = URI.parse(base)
+        uri.query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
+        http = Net::HTTP.new( uri.host, uri.port )
+        http.use_ssl = true if uri.scheme == "https" # enable SSL/TLS
+        response = nil
+        
+        http.start {|http| response = http.request_get(uri.request_uri) }
+        
+        if response.code == "200" 
+          json = JSON.parse(response.body)
+          if Babelphish.api_version == 'v2'
+            json['data']['translations'][0]['translatedText']
+          else
+            json['responseData']['translatedText']
+          end
         else
           if tries <= Babelphish::MAX_RETRIES
             # Try again a few more times
             translate(text, to, from, tries+=1)
           else
-            raise Exceptions::GoogleResponseError, "A problem occured while translating from #{from} to #{to}.  #{json['responseDetails']}"
+            raise Exceptions::GoogleResponseError, "A problem occured while translating from #{from} to #{to}.  #{response.body}"
           end
         end
       end
@@ -45,50 +85,59 @@ module Babelphish
       #      
       def multiple_translate(text, tos, from = 'en', tries = 0)
         return {} if text.strip.empty? # Google doesn't like it when you send them an empty string
-        base = Babelphish::GOOGLE_AJAX_URL + 'translate'
-        # assemble query params
-        params = {
-          :q => text,
-          :v => 1.0
-        }
-        query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
-        
-        tos.each do |to|
-          if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
-            raise Exceptions::GoogleResponseError, "#{to} is not a valid Google Translate code.  Please be sure language codes are one of: #{Babelphish::GoogleTranslate::LANGUAGES.join(',')}"
-          end
-          query <<  "&langpair=" + CGI.escape("#{from}|#{to}")
-        end
 
-        response = Net::HTTP.get_response( URI.parse( "#{base}?#{query}" ) )
-        json = JSON.parse( response.body )
-
-        if json['responseStatus'] == 200
+        if Babelphish.api_version == 'v2'
           results = {}
-          json['responseData'].each_with_index do |data, index|
-            if data['responseStatus'] == 200
-              results[tos[index]] = data['responseData']['translatedText']
-            else
-              # retry the single translation
-              translate(text, tos[index], from)
-            end
+          tos.each do |to|
+            results[to] = translate( text, to, from )
           end
           results
         else
-          if tries <= Babelphish::MAX_RETRIES
-            # Try again a few more times
-            multiple_translate(text, tos, from, tries+=1)
+          base = Babelphish.google_ajax_url + 'translate'
+          # assemble query params
+          params = {
+            :q => text,
+            :v => 1.0
+          }
+          query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
+
+          tos.each do |to|
+            if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
+              raise Exceptions::GoogleResponseError, "#{to} is not a valid Google Translate code.  Please be sure language codes are one of: #{Babelphish::GoogleTranslate::LANGUAGES.join(',')}"
+            end
+            query <<  "&langpair=" + CGI.escape("#{from}|#{to}")
+          end
+
+          response = Net::HTTP.get_response( URI.parse( "#{base}?#{query}" ) )
+          json = JSON.parse( response.body )
+
+          if json['responseStatus'] == 200
+            results = {}
+            if json['responseData'].is_a?(Array)
+              json['responseData'].each_with_index do |data, index|
+                results[tos[index]] = data['responseData']['translatedText']
+              end
+            else
+              results[tos[0]] = json['responseData']['translatedText']
+            end
+            results
           else
-            raise Exceptions::GoogleResponseError, "A problem occured while translating.  #{response} -- #{response.body} -- From: #{from} -- Text: #{text}"
+            if tries <= Babelphish::MAX_RETRIES
+              # Try again a few more times
+              multiple_translate(text, tos, from, tries+=1)
+            else
+              raise Exceptions::GoogleResponseError, "A problem occured while translating.  #{response} -- #{response.body} -- From: #{from} -- Text: #{text}"
+            end
           end
         end
+
       end
 
       # Sends a string to google to attempt to detect the language.  
       # Returns an array indicating success/fail and the resulting data from google in a hash:
       # {"language"=>"en", "confidence"=>0.08594032, "isReliable"=>false}
       def detect_language(text)
-        request = Babelphish::GOOGLE_AJAX_URL + "detect?v=1.0&q=" + CGI.escape(text) 
+        request = Babelphish.google_ajax_url + "detect?v=1.0&q=" + CGI.escape(text) 
         # send get request
         response = Net::HTTP.get_response( URI.parse( request ) )
         json = JSON.parse( response.body )

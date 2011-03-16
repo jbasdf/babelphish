@@ -28,7 +28,7 @@ begin
     gem.email = "justinball@gmail.com"
     gem.homepage = "http://github.com/jbasdf/babelphish"
     gem.description = "Babelphish helps you make a quick translation of your application using Google Translate."
-    gem.authors = ["Justin Ball"]
+    gem.authors = ["Justin Ball", "Michael Jenik"]
     gem.rubyforge_project = "babelphish"
     gem.add_dependency "ya2yaml"
     gem.add_dependency "json"
