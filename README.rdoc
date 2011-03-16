@@ -26,7 +26,7 @@ You can also set the values programmatically:
 
   Babelphish.set_settings({"api_key"=>"", "version"=>"v2"})
 
-Google places a 100,000 character limit per day on each API key. Once you hit the limit Google will begin returning 403 errors.
+Google places a 100,000 character limit per day on each API key. Once you hit the limit Google will begin returning 403 errors. (You can hit this limit really quickly.)
 
 == USAGE:
 
