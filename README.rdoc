@@ -21,7 +21,10 @@ The contents should look like this:
 
   api_key: THE KEY YOU GET FROM GOOGLE GOES HERE
   version: v2
-
+  # Optional value specifying the default languages to translate to:
+  #translate_tos: es,fr,jp,de
+  
+  
 You can also set the values programmatically:
 
   Babelphish.set_settings({"api_key"=>"", "version"=>"v2"})

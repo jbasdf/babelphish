@@ -12,7 +12,7 @@ OptionParser.new do |opts|
   opts.on('-l', '--language language', "Required if using 'html' option.  This specifies the source language for the html or erb files") { |language| ENV['language'] = language }
   opts.on('-o', '--overwrite', "Overwrite existing translations(default 'false')") { ENV['overwrite'] = 'yes' }
   opts.on('-t', '--translate_to to', "Only translate from the source file to a specific language (ie -t es will only translate to Spanish)") { |to| ENV['translate_to'] = to }
-  opts.on('-s', '--translate_tos tos', "Specify a list of languages to translate to.  ie -s en,jp,fr.  Language codes can be found on http://babelphish.rubyforge.org/.") { |tos| ENV['translate_tos'] = tos }
+  opts.on('-s', '--translate_tos tos', "Specify a list of languages to translate to.  ie -s en,jp,fr.  Language codes can be found on https://github.com/jbasdf/babelphish.") { |tos| ENV['translate_tos'] = tos }
 end.parse!
 
 if Babelphish.load_tasks

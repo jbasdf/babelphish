@@ -50,6 +50,14 @@ module Babelphish
         uri.query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
         http = Net::HTTP.new( uri.host, uri.port )
         http.use_ssl = true if uri.scheme == "https" # enable SSL/TLS
+        
+        # TODO kind of dangerous to turn off all verification. Should try to get a valid cert file at some point.
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        # cacert_file = File.join(File.expand_path("~"), "cacert.pem")
+        # if File.exist?(cacert_file)
+        #   http.ca_file = cacert_file
+        # end
+        
         response = nil
         
         http.start {|http| response = http.request_get(uri.request_uri) }

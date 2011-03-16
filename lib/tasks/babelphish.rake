@@ -1,14 +1,21 @@
 desc "Translate files via Google Translate."
 task :babelphish do
   require 'babelphish/translator'
+
+  babelphish_settings_file = File.join(File.expand_path("~"), ".babelphish.yml")
+  if File.exist?(babelphish_settings_file)
+    settings = YAML.load_file(babelphish_settings_file)
+    translate_tos = settings['translate_tos'] if settings['translate_tos']
+  end
+  
   options={}
   yml = ENV['yml']
   html = ENV['html']
   language = ENV['language']
   overwrite = ENV['overwrite'] == 'yes'
   translate_to = ENV['translate_to'] || nil
-  translate_tos = ENV['translate_tos'] || nil
-  
+  translate_tos ||= ENV['translate_tos'] || nil
+
   begin
     translate_tos = translate_tos.split(',') if translate_tos
   rescue
