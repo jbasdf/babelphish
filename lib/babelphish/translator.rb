@@ -86,10 +86,16 @@ module Babelphish
       def multiple_translate(text, tos, from = 'en', tries = 0)
         return {} if text.strip.empty? # Google doesn't like it when you send them an empty string
 
+        tos.each do |to|
+          if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
+            raise Exceptions::GoogleResponseError, "#{to} is not a valid Google Translate code.  Please be sure language codes are one of: #{Babelphish::GoogleTranslate::LANGUAGES.join(',')}"
+          end
+        end
+        
         if Babelphish.api_version == 'v2'
           results = {}
           tos.each do |to|
-            results[to] = translate( text, to, from )
+            results[to] = translate(text, to, from)
           end
           results
         else
@@ -102,9 +108,6 @@ module Babelphish
           query = params.map{ |k,v| "#{k}=#{CGI.escape(v.to_s)}" }.join('&')
 
           tos.each do |to|
-            if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
-              raise Exceptions::GoogleResponseError, "#{to} is not a valid Google Translate code.  Please be sure language codes are one of: #{Babelphish::GoogleTranslate::LANGUAGES.join(',')}"
-            end
             query <<  "&langpair=" + CGI.escape("#{from}|#{to}")
           end
 

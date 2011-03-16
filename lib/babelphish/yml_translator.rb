@@ -138,6 +138,7 @@ module Babelphish
       end
       
       def remove_substitutions(translate_text)
+        return '' if !translate_text
         @replacements.each do |r|
           translate_text.sub!(SUBSTITUTION_PLACE_HOLDER, r)
         end

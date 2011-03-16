@@ -66,17 +66,23 @@ module Babelphish
         # Put the code back
         translations.each_key do |locale|
           replacements.each do |r|
-            translations[locale].sub!(holder, r)
+            if translations[locale]
+              translations[locale].sub!(holder, r)
+            else
+              STDERR.puts "Unable to location translation for: #{locale} (From was #{from}. If they match then no translation was generated)."
+            end
           end
         end
         
         # Put the newlines back in
         translations.each_key do |locale|
           newline_replacements.each do |r|
-            translations[locale].sub!(newline_holder, r)
-            if translations[locale]['<html>']
-              # Google translate can insert '<html>' at the beginning of the result.  Remove it.
-              translations[locale]['<html>']= '' unless begins_with_html
+            if translations[locale]
+              translations[locale].sub!(newline_holder, r)
+              if translations[locale]['<html>']
+                # Google translate can insert '<html>' at the beginning of the result.  Remove it.
+                translations[locale]['<html>']= '' unless begins_with_html
+              end
             end
           end
         end

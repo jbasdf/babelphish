@@ -29,14 +29,10 @@ begin
     gem.homepage = "http://github.com/jbasdf/babelphish"
     gem.description = "Babelphish helps you make a quick translation of your application using Google Translate."
     gem.authors = ["Justin Ball", "Michael Jenik"]
-    gem.rubyforge_project = "babelphish"
     gem.add_dependency "ya2yaml"
     gem.add_dependency "json"
   end
   Jeweler::GemcutterTasks.new
-  Jeweler::RubyforgeTasks.new do |rubyforge|
-    rubyforge.doc_task = "rdoc"
-  end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
