@@ -10,15 +10,14 @@ module Babelphish
         if text.is_a? Symbol 
            return text
         end
-        
         if text.length > 1000  #actually the USI length limit is 2000
            text_now = ""
            text_rem = ""
-           text.split(".") do |text_chunk|
-              if text_now.length < 1000
-                 text_now += (text_now.length == 0 ? "" : ".") + text_chunk
+           text.split(".").each do |text_chunk|
+              if text_now.length + text_chunk.length < 1000
+                 text_now += (text_chunk + ".")
               else
-                 text_rem += (text_now.length == 0 ? "" : ".") + text_chunk
+                 text_rem += (text_chunk + ".")
               end 
            end
            return translate(text_now, to, from) + "." + translate(text_rem, to, from)
