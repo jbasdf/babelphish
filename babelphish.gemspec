@@ -5,11 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{babelphish}
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Justin Ball", "Michael Jenik"]
-  s.date = %q{2011-03-15}
+  s.date = %q{2011-04-26}
+  s.default_executable = %q{babelphish}
   s.description = %q{Babelphish helps you make a quick translation of your application using Google Translate.}
   s.email = %q{justinball@gmail.com}
   s.executables = ["babelphish"]
