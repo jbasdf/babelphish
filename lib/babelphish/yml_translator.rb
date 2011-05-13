@@ -128,13 +128,13 @@ module Babelphish
       def add_substitutions(translate_text)
         # pull out all the string substitutions so that google doesn't translate those
         pattern = /\{\{.+?\}\}/ # non greedy pattern match so that we properly match strings like: "{{name}} on {{application_name}}"
-        @replacements = translate_text.scan(pattern)
-        translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER)
+        @replacements = translate_text.to_s.scan(pattern)
+        translate_text.to_s.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER)
 
         # Pull out all the translation blocks so Google doesn't mess with those
         pattern = /%\{.+?\}/
-        @replacements2 = translate_text.scan(pattern)
-        translate_text.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER_2)
+        @replacements2 = translate_text.to_s.scan(pattern)
+        translate_text.to_s.gsub!(pattern, SUBSTITUTION_PLACE_HOLDER_2)
       end
       
       def remove_substitutions(translate_text)
