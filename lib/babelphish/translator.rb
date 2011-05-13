@@ -91,7 +91,7 @@ module Babelphish
       # {"responseData": [{"responseData":{"translatedText":"ciao mondo"},"responseDetails":null,"responseStatus":200},{"responseData":{"translatedText":"Bonjour le Monde"},"responseDetails":null,"responseStatus":200}], "responseDetails": null, "responseStatus": 200}
       #      
       def multiple_translate(text, tos, from = 'en', tries = 0)
-        return {} if text.strip.empty? # Google doesn't like it when you send them an empty string
+        return {} if text.to_s.strip.empty? # Google doesn't like it when you send them an empty string
 
         tos.each do |to|
           if !Babelphish::GoogleTranslate::LANGUAGES.include?(to)
