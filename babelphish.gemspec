@@ -5,15 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{babelphish}
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Justin Ball", "Michael Jenik"]
-  s.date = %q{2011-04-26}
-  s.default_executable = %q{babelphish}
+  s.authors = [%q{Justin Ball}, %q{Michael Jenik}]
+  s.date = %q{2011-05-18}
   s.description = %q{Babelphish helps you make a quick translation of your application using Google Translate.}
   s.email = %q{justinball@gmail.com}
-  s.executables = ["babelphish"]
+  s.executables = [%q{babelphish}]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.rdoc"
@@ -71,8 +70,8 @@ Gem::Specification.new do |s|
     "test/translations/en.yml"
   ]
   s.homepage = %q{http://github.com/jbasdf/babelphish}
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.0}
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.1}
   s.summary = %q{Translate with Google like a fule => 'fool'}
   s.test_files = [
     "test/test_babelphish.rb",
