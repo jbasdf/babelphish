@@ -51,13 +51,13 @@ module Babelphish
         # Pull out all the code blocks so Google doesn't mess with those
         pattern = /\<\%.+\%\>/
         holder = '{{---}}'
-        replacements = text.scan(pattern)
+        replacements = text.to_s.scan(pattern)
         text.gsub!(pattern, holder)
         
         # Pull out all the new lines so Google doesn't mess with those
         pattern = /\n/
         newline_holder = '<brr />'
-        newline_replacements = text.scan(pattern)
+        newline_replacements = text.to_s.scan(pattern)
         text.gsub!(pattern, newline_holder)
         
         # Send to Google for translations
