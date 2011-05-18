@@ -1,6 +1,6 @@
 desc "Translate files via Google Translate."
 task :babelphish do
-  require 'babelphish/translator'
+  require 'babelphish'
 
   babelphish_settings_file = File.join(File.expand_path("~"), ".babelphish.yml")
   if File.exist?(babelphish_settings_file)
