@@ -7,14 +7,16 @@ require 'json'
 #require 'net/http'
 require 'net/https'
 
-begin
-  require 'jcode'
-rescue LoadError
+if RUBY_VERSION < '1.9'
   begin
-    gem 'jcode'
-  rescue Gem::LoadError
-    puts "Please install the jcode gem"
-  end
+    require 'jcode'
+  rescue LoadError
+    begin
+      gem 'jcode'
+    rescue Gem::LoadError
+      puts "Please install the jcode gem"
+    end
+  end  
 end
 
 begin
