@@ -35,7 +35,7 @@ require File.dirname(__FILE__) + '/../lib/babelphish/exceptions'
 require File.dirname(__FILE__) + '/../lib/babelphish/yml_translator'
 require File.dirname(__FILE__) + '/../lib/babelphish/html_translator'
 
-$KCODE = 'UTF8'
+$KCODE = 'UTF8' if RUBY_VERSION < '1.9'
   
 module Babelphish
   
